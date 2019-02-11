@@ -1,9 +1,11 @@
 import uuid from 'uuid/v4'
 
 export default class Entity {
-    constructor(name, opts = { mixins: [] }) {
+    constructor(name, opts = { mixins: [], tags: new Set() }) {
         this.mixins = new Set()
         this.groups = new Set()
+        this.tags = opts.tags
+        this.name = name
         this.id = uuid()
         opts.mixins.forEach(mixin => {
             Object.entries(mixin).forEach((k, v) => {
