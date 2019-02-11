@@ -36,4 +36,24 @@ class GameState {
     isBlocked(pt) {
         return this.thingsAt(pt).some(el => el.has('blocker'))
     }
+
+    pause() {
+        this.engine.lock()
+    }
+
+    stasrt() {
+        this.engine.start()
+    }
+
+    unpause() {
+        this.engine.unlock()
+    }
+
+    schedule(entity) {
+        this.scheduler.add(entity, true)
+    }
+
+    unschedule(entity) {
+        this.scheduler.remove(entity)
+    }
 }
