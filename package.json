@@ -1,0 +1,28 @@
+{
+  "name": "wolfs-den-static",
+  "version": "0.0.1",
+  "description": "Another JS implemntatioin of the Wolf's Den roguelike",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rakaneth",
+  "license": "ISC",
+  "dependencies": {
+    "rot-js": "^2.0.3",
+    "uuid": "^3.3.2",
+    "vue": "^2.6.5"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "css-loader": "^2.1.0",
+    "vue-loader": "^15.6.2",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.5",
+    "webpack": "^4.29.3",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
