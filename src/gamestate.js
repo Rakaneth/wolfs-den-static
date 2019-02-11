@@ -29,4 +29,11 @@ class GameState {
         return Object.values(this.entities).filter(en => en.has('position') && en.position.same(pt))
     }
 
+    isEntityAt(entity, pt) {
+        return this.thingsAt(pt).includes(entity)
+    }
+
+    isBlocked(pt) {
+        return this.thingsAt(pt).some(el => el.has('blocker'))
+    }
 }
