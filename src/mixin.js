@@ -29,16 +29,5 @@ export let Mover = new Mixin('mover', 'mover', {
         if (this.has('position')) {
             this.pos = this.pos.translate(dx, dy)
         }
-    },
-    tryMove(pt, gameMap) {
-        if (gameMap.walkable(pt)) {
-            this.move(pt)
-        }
-    },
-    tryMoveBy(dx, dy) {
-        let pt = this.pos.translate(dx, dy)
-        if (gameMap.walkable(pt)) {
-            this.move(pt)
-        }
     }
 })
