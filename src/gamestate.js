@@ -41,7 +41,7 @@ class GameState {
         this.engine.lock()
     }
 
-    stasrt() {
+    start() {
         this.engine.start()
     }
 
