@@ -26,8 +26,6 @@ export let Mover = new Mixin('mover', 'mover', {
         }
     },
     moveBy(dx, dy) {
-        if (this.has('position')) {
-            this.move(this.pos.translate(dx, dy))
-        }
+        this.move(this.pos.translate(dx, dy))
     }
 })
