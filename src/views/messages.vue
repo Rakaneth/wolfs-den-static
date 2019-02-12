@@ -19,6 +19,9 @@ export default {
 #messages {
   height: 20vw;
   font-size: 16px;
+  border: 1px solid red;
+  width: 28vw;
+  overflow-y: scroll;
 }
 </style>
 

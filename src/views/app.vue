@@ -1,17 +1,20 @@
 <template>
-  <div>
+  <div class="game-ui">
     <div ref="canvas"></div>
-    <messages :messages="messages"></messages>
+    <player-stats :player="gameState.player"></player-stats>
+    <messages :messages="gameState.messages"></messages>
   </div>
 </template>
 
 <script>
 import Messages from "./messages.vue";
 import GameManager from "../gamestate";
+import PlayerStats from "./stats.vue";
 import { Display } from "rot-js";
 export default {
   components: {
-    Messages
+    Messages,
+    PlayerStats
   },
   mounted() {
     let canvas = this.$refs.canvas;
@@ -25,10 +28,16 @@ export default {
   },
   data() {
     return {
-      messages: GameManager.messages,
-      player: GameManager.player
+      gameState: GameManager
     };
   }
 };
 </script>
+
+<style scoped>
+.game-ui {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+</style>
 

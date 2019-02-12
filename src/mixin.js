@@ -8,9 +8,14 @@ class Mixin {
     constructor(name, group, data = {}) {
         this.name = name
         this.group = group
-        Object.entries(data).forEach((k, v) => {
-            this[k] = v
-        })
+        for (let prop in data) {
+            let propDesc = Object.getOwnPropertyDescriptor(data, prop)
+            if (propDesc.get) {
+                Object.defineProperty(this, prop, propDesc)
+            } else {
+                this[prop] = data[prop]
+            }
+        }
     }
 }
 
@@ -19,9 +24,9 @@ export let Position = new Mixin('position', 'position', {
     mapID: "none"
 })
 export let Drawable = new Mixin('drawable', 'drawable', {
-    init(entity, opts) {
-        entity.glyph = opts.glyph || '@'
-        entity.color = opts.color || 'white'
+    init(opts) {
+        this.glyph = opts.glyph || '@'
+        this.color = opts.color || 'white'
     }
 })
 export let Player = new Mixin('player', 'player')
@@ -38,19 +43,19 @@ export let Mover = new Mixin('mover', 'mover', {
 })
 
 export let PrimaryStats = new Mixin('primary-stats', 'primary-stats', {
-    init(entity, opts) {
+    init(opts) {
         PriStatNames.forEach(stat => {
-            entity[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 10
+            this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 10
         })
     }
 })
 
 export let Equipment = new Mixin('equipment', 'secondary-stats', {
-    init(entity, opts) {
+    init(opts) {
         SecStatNames.forEach(stat => {
-            entity[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 10
-            entity.equipped = false
-            entity.slot = opts.slot || "trinket"
+            this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 10
+            this.equipped = false
+            this.slot = opts.slot || "trinket"
         })
     }
 })
@@ -67,13 +72,56 @@ export let EquipWearer = new Mixin('equip-wearer', 'equip-wearer', {
         if (eq.has('equipment')) {
             eq.equipped = false
         }
+    },
+    getTotalEquipped(stat) {
+        if (this.has('inventory')) {
+            return this.inventory
+                .map(el => GameManager.entityByID(el))
+                .filter(el => el.has('equipment') && el.equipped)
+                .reduce((total, eq) => total + eq[stat], 0)
+        } else {
+            return 0
+        }
+    },
+    getStat(stat) {
+        let isPrimary = PriStatNames.includes(stat)
+        let base = this[stat] || 0
+        let toAdd = 0
+        if (!isPrimary) {
+            switch (stat) {
+                case 'atp':
+                    toAdd = this['skl'] || 0
+                    break;
+                case 'dfp':
+                    toAdd = this['spd'] || 0
+                    break;
+                case 'tou':
+                    toAdd = this['stam'] || 0
+                    break;
+                case 'dmg':
+                    toAdd = this['str'] || 0
+                    break;
+                case 'res':
+                    toAdd = Math.floor(((this['sag'] || 0) + (this['stam'] || 0)) / 2)
+                    break;
+                case 'wil':
+                    toAdd = this['sag']
+                    break;
+                case 'pwr':
+                    toAdd = this['smt']
+                    break;
+                default:
+                    toAdd = 0
+            }
+        }
+        return base + toAdd + this.getTotalEquipped(stat)
     }
 })
 
 export let Inventory = new Mixin('inventory', 'inventory', {
-    init(entity, opts) {
-        entity.inventory = opts.startInventory || []
-        entity.capacity = opts.capacity || 2
+    init(opts) {
+        this.inventory = opts.startInventory || []
+        this.capacity = opts.capacity || 2
     },
     pickUp(itemOrEID) {
         let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
@@ -108,8 +156,8 @@ export let Inventory = new Mixin('inventory', 'inventory', {
 })
 
 export let Money = new Mixin('money', 'money', {
-    init(entity, opts) {
-        entity.amt = RNG.getUniformInt(opts.minCoins, opts.maxCoins)
+    init(opts) {
+        this.amt = RNG.getUniformInt(opts.minCoins, opts.maxCoins)
     }
 })
 

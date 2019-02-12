@@ -4,10 +4,16 @@
 <head>
     <title>Wolf's Den, Web Edition</title>
     <script src='/dist/vue.js'></script>
+    <style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+    </style>
 </head>
 
 <body>
-    <div id='gui'></div>
+    <div id='gui' class='grid-container'></div>
 </body>
 
 <script src='/dist/bundle.js'></script>

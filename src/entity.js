@@ -1,7 +1,6 @@
 import uuid from 'uuid/v4'
 import GameManager from './gamestate'
 import { decorate } from './utils';
-import { callbackify } from 'util';
 
 export default class Entity {
     constructor(name, opts = { mixins: [], tags: new Set() }) {
@@ -11,18 +10,21 @@ export default class Entity {
         this.name = name
         this.id = uuid()
         opts.mixins.forEach(mixin => {
-            Object.entries(mixin).forEach((k, v) => {
-                if (!(k === 'name' || k === 'init' || k === 'group')) {
-                    if (!this[k]) {
-                        this[k] = v
+            for (let prop in mixin) {
+                if (!(prop === 'init' || prop === 'name' || prop === 'group' || this.hasOwnProperty(prop))) {
+                    let propDesc = Object.getOwnPropertyDescriptor(mixin, prop)
+                    if (propDesc.get) {
+                        Object.defineProperty(this, prop, propDesc)
+                    } else {
+                        this[prop] = mixin[prop]
                     }
                 }
-                if (mixin.init) {
-                    mixin.init(this, opts)
-                }
-                this.mixins.add(mixin.name)
-                this.mixins.add(mixin.group)
-            })
+            }
+            this.mixins.add(mixin.name)
+            this.groups.add(mixin.group)
+            if (mixin.init) {
+                mixin.init.call(this, opts)
+            }
         })
     }
 
@@ -51,15 +53,4 @@ export default class Entity {
             calbak(this)
         }
     }
-
-    getStat(stat) {
-        let base = this[stat] || 0
-        if (this.has('inventory')) {
-            return base + this.getTotalEquipped(stat)
-        } else {
-            return base
-        }
-    }
-
-
 }

@@ -26,13 +26,16 @@ module.exports = {
                     'css-loader'
                 ]
             },
+            /*
             {
                 test: /\.js$/,
                 use: {
                     loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env'],
-                        plugins: ['@babel/plugin-transform-modules-commonjs']
+                        plugins: [
+                            '@babel/plugin-transform-modules-commonjs',
+                            'transform-class-properties']
                     }
                 },
                 include: [
@@ -40,6 +43,7 @@ module.exports = {
                     resolve('node_modules/webpack-dev-server/client')
                 ]
             }
+            */
         ]
     },
     devtool: 'eval',
