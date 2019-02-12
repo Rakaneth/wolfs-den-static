@@ -43,4 +43,5 @@ class Dispatcher {
     }
 }
 
-export default DispatcherMain = new Dispatcher()
+let GameEventManager = new Dispatcher()
+export default GameEventManager

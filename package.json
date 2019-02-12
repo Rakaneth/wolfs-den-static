@@ -4,7 +4,8 @@
   "description": "Another JS implemntatioin of the Wolf's Den roguelike",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --color --progress --config config/webpack.config.js --mode development --hot"
   },
   "author": "Rakaneth",
   "license": "ISC",
@@ -14,6 +15,9 @@
     "vue": "^2.6.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.5",
     "babel-preset-env": "^1.7.0",
@@ -23,6 +27,7 @@
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.5",
     "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"
   }
 }

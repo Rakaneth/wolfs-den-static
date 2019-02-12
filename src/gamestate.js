@@ -1,4 +1,5 @@
 import { Scheduler, Engine } from 'rot-js'
+import GameEventManager from './dispatcher'
 
 class GameState {
     constructor() {
@@ -7,6 +8,7 @@ class GameState {
         this.scheduler = new Scheduler.Speed()
         this.engine = new Engine(this.scheduler)
         this.curMapID = "none"
+        this.messages = []
     }
 
     get player() {
@@ -21,12 +23,27 @@ class GameState {
         this.curMapID = value
     }
 
-    byID(eID) {
+    addEntity(entity) {
+        this.entities[entity.id] = entity
+        GameEventManager.dispatch('add-entity', entity)
+    }
+
+    removeEntity(entity) {
+        GameEventManager.dispatch('remove-entity', entity)
+        this.unschedule(entity)
+        delete this.entities[entity.id]
+    }
+
+    entityByID(eID) {
         return this.entities[eID]
     }
 
+    mapByID(mID) {
+        return this.maps[mID]
+    }
+
     thingsAt(pt) {
-        return Object.values(this.entities).filter(en => en.has('position') && en.position.same(pt))
+        return Object.values(this.entities).filter(en => en.has('position') && en.position.same(pt) && en.mapID === this.curMapID)
     }
 
     isEntityAt(entity, pt) {
@@ -57,3 +74,6 @@ class GameState {
         this.scheduler.remove(entity)
     }
 }
+
+let GameManager = new GameState()
+export default GameManager

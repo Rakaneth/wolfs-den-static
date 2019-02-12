@@ -1,4 +1,7 @@
 import uuid from 'uuid/v4'
+import GameManager from './gamestate'
+import { decorate } from './utils';
+import { callbackify } from 'util';
 
 export default class Entity {
     constructor(name, opts = { mixins: [], tags: new Set() }) {
@@ -23,7 +26,40 @@ export default class Entity {
         })
     }
 
+    get gameMap() {
+        if (this.has('position')) {
+            return GameManager.mapByID(this.mapID)
+        } else {
+            return null
+        }
+    }
+
+    get displayString() {
+        if (this.has('drawable')) {
+            return decorate(this.name, this.color)
+        } else {
+            return this.name
+        }
+    }
+
     has(mixinName) {
         return this.mixins.has(mixinName) || this.groups.has(mixinName)
     }
+
+    whenHas(mixinName, calbak) {
+        if (this.has(mixinName)) {
+            calbak(this)
+        }
+    }
+
+    getStat(stat) {
+        let base = this[stat] || 0
+        if (this.has('inventory')) {
+            return base + this.getTotalEquipped(stat)
+        } else {
+            return base
+        }
+    }
+
+
 }

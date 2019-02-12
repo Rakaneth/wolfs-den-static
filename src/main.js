@@ -1,9 +1,6 @@
+import Vue from 'vue'
+import App from './views/app'
 
-let opts = {
-    width: 50,
-    height: 50
-}
-let disp = new ROT.Display(opts)
-let canvas = document.getElementById('map-canvas')
-canvas.appendChild(disp.getContainer())
-disp.drawText(0, 0, "Hello, ROTJS!")
+let MainComponent = Vue.extend(App)
+new MainComponent().$mount('#gui')
+

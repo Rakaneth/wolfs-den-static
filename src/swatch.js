@@ -1,3 +1,4 @@
 export default {
-    sepia: 'rgb(127,101,63)'
+    sepia: 'rgb(127,101,63)',
+    cyan: 'rgb(0,255,255)',
 }
