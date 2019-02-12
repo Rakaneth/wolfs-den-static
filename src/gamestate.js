@@ -1,4 +1,4 @@
-import { Scheduler, Engine } from 'rot-js'
+import { Scheduler, Engine, RNG } from 'rot-js'
 import GameEventManager from './dispatcher'
 
 class GameState {
@@ -9,6 +9,7 @@ class GameState {
         this.engine = new Engine(this.scheduler)
         this.curMapID = "none"
         this.messages = []
+        this.RNG = RNG
     }
 
     get player() {

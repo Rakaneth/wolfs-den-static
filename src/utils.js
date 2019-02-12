@@ -19,3 +19,7 @@ export function between(val, low, high) {
 export function decorate(text, color) {
     return `<span style='${color}'>${text}</span>`
 }
+
+export function listRemove(list, val) {
+    list = list.filter(el => el !== val)
+}

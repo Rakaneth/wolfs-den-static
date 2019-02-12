@@ -1,5 +1,8 @@
 <template>
   <div id="stats">
+    <div>{{ player.name }}</div>
+    <div>{{ player.mapID }}</div>
+    <div>{{ player.pos }}</div>
     <div class="grid-container">
       <div>Strength {{ player.getStat('str') }}</div>
       <div>Damage {{ player.getStat('dmg') }}</div>
@@ -16,15 +19,24 @@
       <div></div>
       <div>Power {{ player.getStat('pwr')}}</div>
     </div>
+    <div>
+      <ul>
+        <li v-for="thing in gameState.entityByID(player.inventory)" :key="thing.id">{{ thing.name}}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import Entity from "../entity";
 export default {
   name: "player-stats",
   props: {
-    player: Entity
+    gameState: Object
+  },
+  computed: {
+    player() {
+      return this.gameState.player;
+    }
   }
 };
 </script>
@@ -32,6 +44,9 @@ export default {
 <style scoped>
 .grid-container {
   width: 28vw;
+}
+
+#stats {
   border: 1px solid red;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="game-ui">
     <div ref="canvas"></div>
-    <player-stats :player="gameState.player"></player-stats>
+    <player-stats :gameState="gameState"></player-stats>
     <messages :messages="gameState.messages"></messages>
   </div>
 </template>

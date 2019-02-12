@@ -1,5 +1,5 @@
 import Point from './point'
-import { PriStatNames, SecStatNames } from './utils'
+import { PriStatNames, SecStatNames, listRemove } from './utils'
 import GameManager from './gamestate'
 import GameEventManager from './dispatcher'
 import { RNG } from 'rot-js';
@@ -31,6 +31,7 @@ export let Drawable = new Mixin('drawable', 'drawable', {
 })
 export let Player = new Mixin('player', 'player')
 export let Blocker = new Mixin('blocker', 'blocker')
+export let Carryable = new Mixin('carryable', 'carryable')
 export let Mover = new Mixin('mover', 'mover', {
     move(pt) {
         if (this.has('position')) {
@@ -123,29 +124,39 @@ export let Inventory = new Mixin('inventory', 'inventory', {
         this.inventory = opts.startInventory || []
         this.capacity = opts.capacity || 2
     },
+    addInventory(eID) {
+        this.inventory.push(eID)
+    },
+    removeInventory(eID) {
+        listRemove(this.inventory, eID)
+    },
     pickUp(itemOrEID) {
         let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
         if (this.bagsFull) {
             whenIsPlayer(this, () => {
                 let msg = `Bags are full; cannot pick up ${thing.displayString}`
-                GameEventManager.dispatch('message', null, msg)
+                GameEventManager.dispatch('message', msg)
             })
-        } else {
+        } else if (thing.has('carryable') || thing.has('money-drop')) {
             thing.whenHas('position', () => {
                 thing.pos = null
                 thing.mapID = null
             })
-            this.inventory.push(thing.id)
+            this.addInventory(thing.id)
             GameEventManager.dispatch('pickup', this, thing)
+        } else {
+            whenIsPlayer(this, () => {
+                GameEventManager.dispatch('message', `Cannot pick up ${thing.displayString}`)
+            })
         }
     },
     drop(itemOrEID) {
         let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
         whenIsPlayer(this, () => {
             let msg = `Dropped ${thing.displayString}`
-            GameEventManager.dispatch('message', null, msg)
+            GameEventManager.dispatch('message', msg)
         })
-        this.inventory = this.inventory.filter(el => el !== thing.id)
+        this.removeInventory(thing.id)
         thing.mapID = this.mapID
         thing.pos = this.pos
         GameEventManager.dispatch('drop', this, thing)
@@ -155,9 +166,15 @@ export let Inventory = new Mixin('inventory', 'inventory', {
     }
 })
 
-export let Money = new Mixin('money', 'money', {
+export let MoneyDrop = new Mixin('money-drop', 'money-drop', {
     init(opts) {
-        this.amt = RNG.getUniformInt(opts.minCoins, opts.maxCoins)
+        this.amt = GameManager.RNG.getUniformInt(opts.minCoins, opts.maxCoins)
+    }
+})
+
+export let MoneyTaker = new Mixin('money-taker', 'money-taker', {
+    init(opts) {
+        this.money = opts.money || 0
     }
 })
 

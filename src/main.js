@@ -2,11 +2,12 @@ import Vue from 'vue'
 import App from './views/app'
 import GameManager from './gamestate'
 import Entity from './entity'
-import { Drawable, PrimaryStats, Player, Mover, Position, EquipWearer, Inventory, Blocker } from './mixin'
+import { Drawable, PrimaryStats, Player, Mover, Position, EquipWearer, Inventory, Blocker, MoneyTaker, Equipment, Carryable, MoneyDrop } from './mixin'
 import GameEventManager from './dispatcher';
 import './gameevents'
 
 let playerOpts = {
+    name: 'player',
     mixins: [
         Drawable,
         Mover,
@@ -16,14 +17,33 @@ let playerOpts = {
         Position,
         EquipWearer,
         Inventory,
+        MoneyTaker
     ],
-}
-let player = new Entity('player', playerOpts)
-GameManager.addEntity(player)
-let MainComponent = Vue.extend(App)
-new MainComponent().$mount('#gui')
-for (let i = 0; i < 300; i++) {
-    GameEventManager.dispatch('message', i)
+    tags: new Set('player')
 }
 
+let sampleItem = new Entity({
+    name: 'item',
+    mixins: [
+        Equipment,
+        Carryable
+    ],
+})
+
+let sampleMoney = new Entity({
+    name: 'coins',
+    mixins: [
+        MoneyDrop
+    ],
+    minCoins: 10,
+    maxCoins: 20
+})
+let player = new Entity(playerOpts)
+GameManager.addEntity(player)
+GameManager.addEntity(sampleItem)
+GameManager.addEntity(sampleMoney)
+player.pickUp(sampleItem)
+player.pickUp(sampleMoney)
+let MainComponent = Vue.extend(App)
+new MainComponent().$mount('#gui')
 

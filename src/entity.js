@@ -3,11 +3,11 @@ import GameManager from './gamestate'
 import { decorate } from './utils';
 
 export default class Entity {
-    constructor(name, opts = { mixins: [], tags: new Set() }) {
+    constructor(opts = { mixins: [], tags: new Set() }) {
         this.mixins = new Set()
         this.groups = new Set()
-        this.tags = opts.tags
-        this.name = name
+        this.tags = opts.tags || new Set()
+        this.name = opts.name || 'No name'
         this.id = uuid()
         opts.mixins.forEach(mixin => {
             for (let prop in mixin) {
