@@ -8,6 +8,6 @@ GameEventManager.on('pickup', (entity, item) => {
     })
 })
 
-GameEventManager.on('message', (_, msg) => {
+GameEventManager.on('message', (msg) => {
     GameManager.messages.push(msg)
 })

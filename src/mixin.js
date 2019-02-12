@@ -53,7 +53,7 @@ export let PrimaryStats = new Mixin('primary-stats', 'primary-stats', {
 export let Equipment = new Mixin('equipment', 'secondary-stats', {
     init(opts) {
         SecStatNames.forEach(stat => {
-            this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 10
+            this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 0
             this.equipped = false
             this.slot = opts.slot || "trinket"
         })

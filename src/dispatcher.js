@@ -13,10 +13,9 @@ class DispatchEvent {
     }
 
     fire(...args) {
-        const cbs = this.calbaks.slice()
-        const thisArg = args.shift()
+        const cbs = this.calbaks.slice(0)
         cbs.forEach(cb => {
-            cb.apply(thisArg, args)
+            cb.apply(null, args)
         })
     }
 }
@@ -38,7 +37,7 @@ class Dispatcher {
     dispatch(eventName, ...args) {
         const ev = this.events[eventName]
         if (ev) {
-            ev.fire(args)
+            ev.fire(...args)
         }
     }
 }
