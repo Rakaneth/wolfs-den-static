@@ -8,6 +8,7 @@ Warning: This may not receive updates quickly. I have a lot of these and I work 
 
 * Entity/mixin model
 * Equipment factory
+* Fame distribution
 
 # WIP
 
