@@ -27,6 +27,7 @@
           :class="{eq: thing.equipped}"
         >
           {{ thing.name}}
+          <span v-if="thing.equipped">({{ thing.slot}})</span>
           <button
             v-if="thing.has('equipment')"
             @click="toggleEquip(thing.id)"

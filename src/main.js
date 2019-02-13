@@ -5,6 +5,7 @@ import Entity from './entity'
 import { Drawable, PrimaryStats, Player, Mover, Position, EquipWearer, Inventory, Blocker, MoneyTaker, Equipment, Carryable, MoneyDrop } from './mixin'
 import GameEventManager from './dispatcher';
 import './gameevents'
+import { buildEquip } from './factory';
 
 let playerOpts = {
     name: 'player',
@@ -19,19 +20,10 @@ let playerOpts = {
         Inventory,
         MoneyTaker
     ],
-    tags: new Set('player')
+    tags: new Set(['player'])
 }
 
-let sampleItem = new Entity({
-    name: 'item',
-    mixins: [
-        Equipment,
-        Carryable
-    ],
-    str: 2,
-    dmg: 5,
-    wil: -10
-})
+let sampleItem = buildEquip('sword', 'iron')
 
 let sampleMoney = new Entity({
     name: 'coins',

@@ -6,6 +6,11 @@ Warning: This may not receive updates quickly. I have a lot of these and I work 
 
 # DONE
 
+* Entity/mixin model
+* Equipment factory
+
 # WIP
 
-* Entity/mixin model
+* Creature factory
+* Consumable items
+

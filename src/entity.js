@@ -6,8 +6,9 @@ export default class Entity {
     constructor(opts = { mixins: [], tags: new Set() }) {
         this.mixins = new Set()
         this.groups = new Set()
-        this.tags = opts.tags || new Set()
+        this.tags = opts.tags ? new Set(opts.tags) : new Set()
         this.name = opts.name || 'No name'
+        this.desc = opts.desc || 'No desc'
         this.id = uuid()
         opts.mixins.forEach(mixin => {
             for (let prop in mixin) {
@@ -26,22 +27,6 @@ export default class Entity {
                 mixin.init.call(this, opts)
             }
         })
-    }
-
-    get gameMap() {
-        if (this.has('position')) {
-            return GameManager.mapByID(this.mapID)
-        } else {
-            return null
-        }
-    }
-
-    get displayString() {
-        if (this.has('drawable')) {
-            return decorate(this.name, this.color)
-        } else {
-            return this.name
-        }
     }
 
     has(mixinName) {

@@ -17,7 +17,7 @@ export function between(val, low, high) {
 }
 
 export function decorate(text, color) {
-    return `<span style='${color}'>${text}</span>`
+    return `<span style='color:${color};'>${text}</span>`
 }
 
 export function listRemove(list, val) {

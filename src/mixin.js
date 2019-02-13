@@ -1,8 +1,8 @@
 import Point from './point'
-import { PriStatNames, SecStatNames, listRemove } from './utils'
+import { PriStatNames, SecStatNames, listRemove, decorate } from './utils'
 import GameManager from './gamestate'
 import GameEventManager from './dispatcher'
-import { RNG } from 'rot-js';
+
 
 class Mixin {
     constructor(name, group, data = {}) {
@@ -21,12 +21,18 @@ class Mixin {
 
 export let Position = new Mixin('position', 'position', {
     pos: new Point(0, 0),
-    mapID: "none"
+    mapID: "none",
+    get gameMap() {
+        return GameManager.mapByID(this.mapID)
+    }
 })
 export let Drawable = new Mixin('drawable', 'drawable', {
     init(opts) {
         this.glyph = opts.glyph || '@'
         this.color = opts.color || 'white'
+    },
+    get displayString() {
+        return decorate(this.name, this.color)
     }
 })
 export let Player = new Mixin('player', 'player')
@@ -51,7 +57,7 @@ export let PrimaryStats = new Mixin('primary-stats', 'primary-stats', {
     }
 })
 
-export let Equipment = new Mixin('equipment', 'secondary-stats', {
+export let Equipment = new Mixin('equipment', 'item', {
     init(opts) {
         SecStatNames.forEach(stat => {
             this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 0
@@ -61,10 +67,49 @@ export let Equipment = new Mixin('equipment', 'secondary-stats', {
         })
         this.equipped = false
         this.slot = opts.slot || "trinket"
+        this.equipType = opts.equipType || "trinket"
+        this.damageType = opts.damageType || "none"
+        this.hardness = opts.hardness || 0
     }
 })
 
-export let EquipWearer = new Mixin('equip-wearer', 'equip-wearer', {
+export let DerivedStats = new Mixin('derived-stats', 'derived-stats', {
+    getStat(stat) {
+        let isPrimary = PriStatNames.includes(stat)
+        let base = this[stat] || 0
+        let toAdd = 0
+        if (!isPrimary) {
+            switch (stat) {
+                case 'atp':
+                    toAdd = this['skl'] || 0
+                    break;
+                case 'dfp':
+                    toAdd = this['spd'] || 0
+                    break;
+                case 'tou':
+                    toAdd = this['stam'] || 0
+                    break;
+                case 'dmg':
+                    toAdd = this['str'] || 0
+                    break;
+                case 'res':
+                    toAdd = Math.floor(((this['sag'] || 0) + (this['stam'] || 0)) / 2)
+                    break;
+                case 'wil':
+                    toAdd = this['sag']
+                    break;
+                case 'pwr':
+                    toAdd = this['smt']
+                    break;
+                default:
+                    toAdd = 0
+            }
+        }
+        return base + toAdd
+    }
+})
+
+export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
     equip(eID) {
         let eq = GameManager.entityByID(eID)
         if (eq.has('equipment')) {
@@ -123,7 +168,7 @@ export let EquipWearer = new Mixin('equip-wearer', 'equip-wearer', {
 
 export let Inventory = new Mixin('inventory', 'inventory', {
     init(opts) {
-        this.inventory = opts.startInventory || []
+        this.inventory = []
         this.capacity = opts.capacity || 2
     },
     addInventory(eID) {
