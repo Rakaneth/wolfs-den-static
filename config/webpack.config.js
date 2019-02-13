@@ -2,6 +2,15 @@ const path = require('path')
 const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const resolve = relativePath => path.resolve(__dirname, '..', relativePath)
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+
+let cleanPaths = ['dist']
+let cleanOpts = { root: resolve('.') }
+let htmlOpts = {
+    template: './src/assets/index.html',
+    filename: './index.html'
+}
 
 module.exports = {
     mode: 'development',
@@ -10,7 +19,7 @@ module.exports = {
         index: resolve('src/main.js')
     },
     output: {
-        filename: 'bundle.js',
+        filename: '[name].js',
         path: resolve('dist'),
     },
     module: {
@@ -26,44 +35,31 @@ module.exports = {
                     'css-loader'
                 ]
             },
-            /*
             {
-                test: /\.js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env'],
-                        plugins: [
-                            '@babel/plugin-transform-modules-commonjs',
-                            'transform-class-properties']
-                    }
-                },
-                include: [
-                    resolve('src'),
-                    resolve('node_modules/webpack-dev-server/client')
-                ]
+                test: /\.html$/,
+                loader: 'html-loader'
             }
-            */
         ]
     },
-    devtool: 'eval',
+    devtool: 'inline-source-maps',
     devServer: {
-        host: '0.0.0.0',
         port: 8080,
         compress: true,
-        open: false,
+        open: true,
+        hot: true,
         watchOptions: {
             ignored: /node_modules/,
             poll: true
         },
-        publicPath: '/dist/',
-        contentBase: resolve('src/assets'),
+        contentBase: './dist',
         watchContentBase: true,
     },
     plugins: [
+        new CleanWebpackPlugin(cleanPaths, cleanOpts),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new HtmlWebpackPlugin(htmlOpts)
     ],
     resolve: {
         alias: {

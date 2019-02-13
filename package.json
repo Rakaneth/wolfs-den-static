@@ -1,34 +1,30 @@
 {
-  "name": "wolfs-den-static",
-  "version": "0.0.1",
-  "description": "Another JS implemntatioin of the Wolf's Den roguelike",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --color --progress --config config/webpack.config.js --mode development --hot"
-  },
-  "author": "Rakaneth",
-  "license": "ISC",
-  "dependencies": {
-    "rot-js": "^2.0.3",
-    "uuid": "^3.3.2",
-    "vue": "^2.6.5"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-modules-commonjs": "^7.2.0",
-    "@babel/preset-env": "^7.3.1",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.5",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
-    "css-loader": "^2.1.0",
-    "vue-loader": "^15.6.2",
-    "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.5",
-    "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14"
-  }
+    "name": "wolfs-den-static",
+    "version": "0.0.1",
+    "description": "Another JS implemntatioin of the Wolf's Den roguelike",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "webpack-dev-server --color --progress --config config/webpack.config.js --mode development",
+        "build": "webpack --color --progress --config config/webpack.config.js --mode production"
+    },
+    "author": "Rakaneth",
+    "license": "ISC",
+    "dependencies": {
+        "rot-js": "^2.0.3",
+        "uuid": "^3.3.2",
+        "vue": "^2.6.5"
+    },
+    "devDependencies": {
+        "clean-webpack-plugin": "^1.0.1",
+        "css-loader": "^2.1.0",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^3.2.0",
+        "vue-loader": "^15.6.2",
+        "vue-style-loader": "^4.1.2",
+        "vue-template-compiler": "^2.6.5",
+        "webpack": "^4.29.3",
+        "webpack-cli": "^3.2.3",
+        "webpack-dev-server": "^3.1.14"
+    }
 }

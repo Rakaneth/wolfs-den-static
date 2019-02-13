@@ -19,7 +19,7 @@
       <div>Money {{ player.displayMoney }}</div>
       <div>Power {{ player.getStat('pwr')}}</div>
     </div>
-    <div>
+    <div id="inventory">Inventory
       <ul>
         <li
           v-for="thing in player.inventory.map(el=>gameState.entityByID(el))"
@@ -78,6 +78,10 @@ button {
 .eq {
   font-weight: bold;
   color: crimson;
+}
+
+#inventory {
+  margin: 1em;
 }
 </style>
 
