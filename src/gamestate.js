@@ -2,7 +2,7 @@ import { Scheduler, Engine, RNG } from 'rot-js'
 import GameEventManager from './dispatcher'
 
 class GameState {
-    constructor() {
+    constructor(rngSeed = null) {
         this.maps = {}
         this.entities = {}
         this.scheduler = new Scheduler.Speed()
@@ -10,6 +10,9 @@ class GameState {
         this.curMapID = "none"
         this.messages = []
         this.RNG = RNG
+        if (rngSeed) {
+            this.RNG.setSeed(rngSeed)
+        }
     }
 
     get player() {
@@ -76,5 +79,5 @@ class GameState {
     }
 }
 
-let GameManager = new GameState()
+let GameManager = new GameState(0xDEADBEEF)
 export default GameManager

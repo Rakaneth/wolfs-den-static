@@ -21,5 +21,5 @@ export function decorate(text, color) {
 }
 
 export function listRemove(list, val) {
-    list = list.filter(el => el !== val)
+    return list.filter(el => el !== val)
 }

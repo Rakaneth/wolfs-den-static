@@ -28,6 +28,9 @@ let sampleItem = new Entity({
         Equipment,
         Carryable
     ],
+    str: 2,
+    dmg: 5,
+    wil: -10
 })
 
 let sampleMoney = new Entity({

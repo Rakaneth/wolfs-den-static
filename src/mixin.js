@@ -55,9 +55,12 @@ export let Equipment = new Mixin('equipment', 'secondary-stats', {
     init(opts) {
         SecStatNames.forEach(stat => {
             this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 0
-            this.equipped = false
-            this.slot = opts.slot || "trinket"
         })
+        PriStatNames.forEach(stat => {
+            this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 0
+        })
+        this.equipped = false
+        this.slot = opts.slot || "trinket"
     }
 })
 
@@ -76,10 +79,9 @@ export let EquipWearer = new Mixin('equip-wearer', 'equip-wearer', {
     },
     getTotalEquipped(stat) {
         if (this.has('inventory')) {
-            return this.inventory
-                .map(el => GameManager.entityByID(el))
-                .filter(el => el.has('equipment') && el.equipped)
-                .reduce((total, eq) => total + eq[stat], 0)
+            let things = this.inventory.map(el => GameManager.entityByID(el))
+            let eqs = things.filter(el => el.has('equipment') && el.equipped)
+            return eqs.reduce((total, eq) => total + (eq[stat] || 0), 0)
         } else {
             return 0
         }
@@ -128,7 +130,7 @@ export let Inventory = new Mixin('inventory', 'inventory', {
         this.inventory.push(eID)
     },
     removeInventory(eID) {
-        listRemove(this.inventory, eID)
+        this.inventory = listRemove(this.inventory, eID)
     },
     pickUp(itemOrEID) {
         let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
@@ -175,6 +177,9 @@ export let MoneyDrop = new Mixin('money-drop', 'money-drop', {
 export let MoneyTaker = new Mixin('money-taker', 'money-taker', {
     init(opts) {
         this.money = opts.money || 0
+    },
+    get displayMoney() {
+        return `${this.money}`
     }
 })
 

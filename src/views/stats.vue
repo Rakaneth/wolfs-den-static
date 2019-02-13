@@ -16,12 +16,22 @@
       <div>Defense {{ player.getStat('dfp')}}</div>
       <div>Smarts {{ player.getStat('smt')}}</div>
       <div>Will {{ player.getStat('wil')}}</div>
-      <div></div>
+      <div>Money {{ player.displayMoney }}</div>
       <div>Power {{ player.getStat('pwr')}}</div>
     </div>
     <div>
       <ul>
-        <li v-for="thing in gameState.entityByID(player.inventory)" :key="thing.id">{{ thing.name}}</li>
+        <li
+          v-for="thing in player.inventory.map(el=>gameState.entityByID(el))"
+          :key="thing.id"
+          :class="{eq: thing.equipped}"
+        >
+          {{ thing.name}}
+          <button
+            v-if="thing.has('equipment')"
+            @click="toggleEquip(thing.id)"
+          >{{ thing.equipped ? 'Unequip' : 'Equip' }}</button>
+        </li>
       </ul>
     </div>
   </div>
@@ -37,6 +47,16 @@ export default {
     player() {
       return this.gameState.player;
     }
+  },
+  methods: {
+    toggleEquip(eID) {
+      let thing = this.gameState.entityByID(eID);
+      if (thing.equipped) {
+        this.player.dequip(eID);
+      } else {
+        this.player.equip(eID);
+      }
+    }
   }
 };
 </script>
@@ -48,6 +68,15 @@ export default {
 
 #stats {
   border: 1px solid red;
+}
+
+button {
+  display: inline;
+}
+
+.eq {
+  font-weight: bold;
+  color: crimson;
 }
 </style>
 
