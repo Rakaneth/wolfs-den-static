@@ -90,7 +90,7 @@ export let DerivedStats = new Mixin('derived-stats', 'derived-stats', {
                     toAdd = this['stam'] || 0
                     break;
                 case 'dmg':
-                    toAdd = this['str'] || 0
+                    toAdd = this.getBonus('str')
                     break;
                 case 'res':
                     toAdd = Math.floor(((this['sag'] || 0) + (this['stam'] || 0)) / 2)
@@ -106,6 +106,9 @@ export let DerivedStats = new Mixin('derived-stats', 'derived-stats', {
             }
         }
         return base + toAdd
+    },
+    getBonus(stat) {
+        return Math.floor(this.getStat(stat) / 10)
     }
 })
 
@@ -147,7 +150,7 @@ export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
                     toAdd = this['stam'] || 0
                     break;
                 case 'dmg':
-                    toAdd = this['str'] || 0
+                    toAdd = this.getBonus('str')
                     break;
                 case 'res':
                     toAdd = Math.floor(((this['sag'] || 0) + (this['stam'] || 0)) / 2)
@@ -163,6 +166,9 @@ export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
             }
         }
         return base + toAdd + this.getTotalEquipped(stat)
+    },
+    getBonus(stat) {
+        return Math.floor(this.getStat(stat) / 10)
     }
 })
 
@@ -210,6 +216,9 @@ export let Inventory = new Mixin('inventory', 'inventory', {
     },
     get bagsFull() {
         return this.inventory.length >= this.capacity
+    },
+    get inventoryEntities() {
+        return this.inventory.map(el => GameManager.entityByID(el))
     }
 })
 
