@@ -21,7 +21,11 @@ export function decorate(text, color) {
 }
 
 export function listRemove(list, val) {
-    return list.filter(el => el !== val)
+    if (list.indexOf(val) > -1) {
+        return list.filter(el => el !== val)
+    } else {
+        return list
+    }
 }
 
 export function debugLog(tag, text) {
