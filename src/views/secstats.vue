@@ -1,6 +1,6 @@
 <template>
   <div class="grid-container" id="sec-stats">
-    <div>Strength</div>
+    <div>Attack</div>
     <div>{{creature.getStat('atp')}}</div>
     <div>Defense</div>
     <div>{{creature.getStat('dfp')}}</div>

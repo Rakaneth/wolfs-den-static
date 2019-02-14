@@ -13,7 +13,7 @@ export function clamp(val, low, high) {
 }
 
 export function between(val, low, high) {
-    return clamp(val, low, high)
+    return clamp(val, low, high) == val
 }
 
 export function decorate(text, color) {
@@ -22,4 +22,8 @@ export function decorate(text, color) {
 
 export function listRemove(list, val) {
     return list.filter(el => el !== val)
+}
+
+export function debugLog(tag, text) {
+    console.log(`[${tag}] ${text}`)
 }

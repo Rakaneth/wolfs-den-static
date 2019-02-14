@@ -5,7 +5,7 @@ import Entity from './entity'
 import { Drawable, PrimaryStats, Player, Mover, Position, EquipWearer, Inventory, Blocker, MoneyTaker, Equipment, Carryable, MoneyDrop } from './mixin'
 import GameEventManager from './dispatcher';
 import './gameevents'
-import { buildEquip } from './factory';
+import { buildAllMaps } from './factory';
 
 let playerOpts = {
     name: 'player',
@@ -23,22 +23,14 @@ let playerOpts = {
     tags: new Set(['player'])
 }
 
-let sampleItem = buildEquip('sword', 'iron')
+buildAllMaps()
 
-let sampleMoney = new Entity({
-    name: 'coins',
-    mixins: [
-        MoneyDrop
-    ],
-    minCoins: 10,
-    maxCoins: 20
-})
+
 let player = new Entity(playerOpts)
+player.mapID = 'mine-upper'
+GameManager.setCurMap('mine-upper')
+player.pos = GameManager.curMap.randomFloor()
 GameManager.addEntity(player)
-GameManager.addEntity(sampleItem)
-GameManager.addEntity(sampleMoney)
-player.pickUp(sampleItem)
-player.pickUp(sampleMoney)
 let MainComponent = Vue.extend(App)
 new MainComponent().$mount('#gui')
 

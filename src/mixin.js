@@ -20,8 +20,10 @@ class Mixin {
 }
 
 export let Position = new Mixin('position', 'position', {
-    pos: new Point(0, 0),
-    mapID: "none",
+    init(opts) {
+        this.mapID = opts.mapID || "none"
+        this.pos = opts.pos || null
+    },
     get gameMap() {
         return GameManager.mapByID(this.mapID)
     }
@@ -115,6 +117,7 @@ export let DerivedStats = new Mixin('derived-stats', 'derived-stats', {
 export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
     equip(eID) {
         let eq = GameManager.entityByID(eID)
+
         if (eq.has('equipment')) {
             eq.equipped = true
         }
@@ -126,12 +129,15 @@ export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
         }
     },
     getTotalEquipped(stat) {
+        return this.allEquipped.reduce((total, nxt) => {
+            return total + nxt[stat]
+        }, 0)
+    },
+    get allEquipped() {
         if (this.has('inventory')) {
-            let things = this.inventory.map(el => GameManager.entityByID(el))
-            let eqs = things.filter(el => el.has('equipment') && el.equipped)
-            return eqs.reduce((total, eq) => total + (eq[stat] || 0), 0)
+            return this.inventoryEntities.filter(el => el.equipped)
         } else {
-            return 0
+            return []
         }
     },
     getStat(stat) {
@@ -237,6 +243,17 @@ export let MoneyTaker = new Mixin('money-taker', 'money-taker', {
     }
 })
 
+export let Projectile = new Mixin('projectile', 'actor', {
+    init(opts) {
+        this.flightPath = opts.flightPath
+    },
+    act() {
+
+    }
+})
+
 export function whenIsPlayer(entity, calbak) {
     entity.whenHas('player', calbak)
 }
+
+

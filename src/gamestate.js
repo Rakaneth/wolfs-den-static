@@ -20,11 +20,18 @@ class GameState {
     }
 
     get curMap() {
-        return this.maps[curMapID]
+        return this.maps[this.curMapID]
     }
 
-    set curMap(value) {
+    setCurMap(value) {
         this.curMapID = value
+        this.curEntities.forEach(en => {
+            if (this.isHere(en) && en.has('actor')) {
+                this.schedule(en)
+            } else {
+                this.unschedule(en)
+            }
+        })
     }
 
     addEntity(entity) {
@@ -47,15 +54,19 @@ class GameState {
     }
 
     thingsAt(pt) {
-        return Object.values(this.entities).filter(en => en.has('position') && en.position.same(pt) && en.mapID === this.curMapID)
+        return Object.values(this.entities).filter(en => en.pos.same(pt) && this.isHere(en))
     }
 
     isEntityAt(entity, pt) {
         return this.thingsAt(pt).includes(entity)
     }
 
+    isHere(entity) {
+        return entity.has('position') && entity.mapID === this.curMapID && !!entity.pos
+    }
+
     isBlocked(pt) {
-        return this.thingsAt(pt).some(el => el.has('blocker'))
+        return this.thingsAt(pt).some(el => el.has('blocker') && this.isHere(el))
     }
 
     pause() {
@@ -77,6 +88,16 @@ class GameState {
     unschedule(entity) {
         this.scheduler.remove(entity)
     }
+
+    get curEntities() {
+        return Object.values(this.entities).filter(en => this.isHere(en))
+    }
+
+    get toDraw() {
+        return this.curEntities.filter(en => en.has('drawable') && !!en.pos).sort((fst, snd) => fst.layer - snd.layer)
+    }
+
+
 }
 
 let GameManager = new GameState(0xDEADBEEF)

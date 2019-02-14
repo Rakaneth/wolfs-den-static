@@ -5,7 +5,7 @@ export default class Point {
     }
 
     same(other) {
-        return this.x == other.x && this.y == other.y
+        return !!other && this.x == other.x && this.y == other.y
     }
 
     distance(other) {
@@ -21,6 +21,6 @@ export default class Point {
     }
 
     toString() {
-        return `(${this.x},${this.y})`
+        return `${this.x},${this.y}`
     }
 }

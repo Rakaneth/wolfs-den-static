@@ -1,5 +1,7 @@
 export default {
     sepia: 'rgb(127,101,63)',
+    darkSepia: 'rgb(94,75,47)',
+    darkerSepia: 'rgb(63,50,31)',
     cyan: 'rgb(0,255,255)',
     blackMark: 'rgb(63,63,63)',
     redMark: 'rgb(191,74,0)',
@@ -10,5 +12,7 @@ export default {
     leather: 'rgb(94,75,47)',
     steel: 'rgb(159,159,159)',
     bone: 'rgb(223,223,223)',
-    blackiron: 'rgb(95,0,191)'
+    blackiron: 'rgb(95,0,191)',
+    yellow: "yellow",
+    white: "white"
 }
