@@ -1,6 +1,6 @@
 <template>
   <div class="game-ui">
-    <map-display :gameState="gameState"></map-display>
+    <map-display :gameState="gameState" ref="mapDisplay"></map-display>
     <player-stats :gameState="gameState"></player-stats>
     <messages :messages="gameState.messages"></messages>
   </div>
@@ -11,6 +11,7 @@ import Messages from "./messages.vue";
 import GameManager from "../gamestate";
 import PlayerStats from "./stats.vue";
 import MapDisplay from "./mapdisplay.vue";
+import GameEventManager from "../dispatcher.js";
 export default {
   components: {
     Messages,
@@ -21,6 +22,12 @@ export default {
     return {
       gameState: GameManager
     };
+  },
+  created() {
+    window.addEventListener("keydown", e => {
+      GameEventManager.dispatch("handle-key", e.keyCode, e.shiftKey);
+      this.$refs.mapDisplay.drawMap();
+    });
   }
 };
 </script>

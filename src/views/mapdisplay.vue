@@ -36,38 +36,41 @@ export default {
   },
   methods: {
     drawMap() {
-      let player = this.gameState.player;
       let curMap = this.gameState.curMap;
-      let c = curMap.cam(player.pos, this.mapW, this.mapH);
-      let w = c.x + this.mapW;
-      let h = c.y + this.mapH;
-      for (let wx = c.x; wx < w; wx++) {
-        for (let wy = c.y; wy < h; wy++) {
-          let worldPt = new Point(wx, wy);
-          let sx = wx - c.x;
-          let sy = wy - c.y;
-          let t = curMap.getTile(worldPt);
-          if (t !== Tiles["null-tile"]) {
-            let fg = t.color;
-            let bg = t.bg || (t.walk ? curMap.floorColor : curMap.wallColor);
-            this.display.draw(sx, sy, t.display, fg, bg);
+      if (curMap.dirty) {
+        let player = this.gameState.player;
+        let c = curMap.cam(player.pos, this.mapW, this.mapH);
+        let w = c.x + this.mapW;
+        let h = c.y + this.mapH;
+        for (let wx = c.x; wx < w; wx++) {
+          for (let wy = c.y; wy < h; wy++) {
+            let worldPt = new Point(wx, wy);
+            let sx = wx - c.x;
+            let sy = wy - c.y;
+            let t = curMap.getTile(worldPt);
+            if (t !== Tiles["null-tile"]) {
+              let fg = t.color;
+              let bg = t.bg || (t.walk ? curMap.floorColor : curMap.wallColor);
+              this.display.draw(sx, sy, t.display, fg, bg);
+            }
           }
         }
+        this.gameState.toDraw.forEach(en => {
+          let pos = en.pos;
+          let inLeft = between(pos.x, c.x, w);
+          let inTop = between(pos.y, c.y, h);
+          if (inLeft && inTop) {
+            this.display.draw(
+              pos.x - c.x,
+              pos.y - c.y,
+              en.glyph,
+              en.color,
+              curMap.floorColor
+            );
+          }
+        });
+        curMap.dirty = false;
       }
-      this.gameState.toDraw.forEach(en => {
-        let pos = en.pos;
-        let inLeft = between(pos.x, c.x, w);
-        let inTop = between(pos.y, c.y, h);
-        if (inLeft && inTop) {
-          this.display.draw(
-            pos.x - c.x,
-            pos.y - c.y,
-            en.glyph,
-            en.color,
-            curMap.floorColor
-          );
-        }
-      });
     }
   }
 };

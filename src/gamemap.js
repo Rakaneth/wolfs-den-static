@@ -42,6 +42,7 @@ export class GameMap {
         this.wallColor = opts.wallColor || Swatch.sepia
         this.floorColor = opts.floorColor || Swatch.darkSepia
         this.floors = []
+        this.dirty = true
     }
 
     getTile(pt) {

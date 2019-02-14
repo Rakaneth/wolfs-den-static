@@ -1,5 +1,6 @@
 import { Scheduler, Engine, RNG } from 'rot-js'
 import GameEventManager from './dispatcher'
+import { debugLog } from './utils';
 
 class GameState {
     constructor(rngSeed = null) {

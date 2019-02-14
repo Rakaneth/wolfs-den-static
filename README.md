@@ -8,7 +8,10 @@ Warning: This may not receive updates quickly. I have a lot of these and I work 
 
 * Entity/mixin model
 * Equipment factory
-* Fame distribution
+* Game distribution
+* Moving @
+* Map structure
+* Map data
 
 # WIP
 

@@ -5,6 +5,7 @@ import Entity from './entity'
 import { Drawable, PrimaryStats, Player, Mover, Position, EquipWearer, Inventory, Blocker, MoneyTaker, Equipment, Carryable, MoneyDrop } from './mixin'
 import GameEventManager from './dispatcher';
 import './gameevents'
+import './handlekeys'
 import { buildAllMaps } from './factory';
 
 let playerOpts = {
