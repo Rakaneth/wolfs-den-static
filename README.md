@@ -12,9 +12,13 @@ Warning: This may not receive updates quickly. I have a lot of these and I work 
 * Moving @
 * Map structure
 * Map data
+* Creature factory
+* Item factory
+* Seeding items/creatures
+* Creature factory
+* Consumable items
 
 # WIP
 
-* Creature factory
-* Consumable items
+* Game mechanics
 
