@@ -1,7 +1,7 @@
 <template>
   <div id="stats">
     <div class="lbl">{{ player.name }}</div>
-    <div class="lbl">{{ player.mapID }}</div>
+    <div class="lbl">{{ player.gameMap.name }}</div>
     <div class="lbl">{{ player.pos }}</div>
     <div class="grid-container">
       <pri-stats :creature="player"></pri-stats>

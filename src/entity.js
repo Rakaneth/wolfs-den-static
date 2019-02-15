@@ -38,4 +38,8 @@ export default class Entity {
             calbak(this)
         }
     }
+
+    whenIsPlayer(calbak) {
+        this.whenHas('player', calbak)
+    }
 }

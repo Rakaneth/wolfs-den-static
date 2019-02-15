@@ -31,7 +31,7 @@ let connsChart = {
 }
 
 export class GameMap {
-    constructor(opts = { width: 30, height: 30, id: 'no mapID' }) {
+    constructor(opts = { width: 30, height: 30, name: 'no name' }) {
         this._tiles = new Array(opts.height).fill(0).map(() => new Array(opts.width).fill(Tiles['null-tile']))
         this._explored = new Array(opts.height).fill(0).map(() => new Array(opts.width).fill(false))
         this.id = opts.id || "no mapID"
@@ -43,6 +43,7 @@ export class GameMap {
         this.floorColor = opts.floorColor || Swatch.darkSepia
         this.floors = []
         this.dirty = true
+        this.name = opts.name
     }
 
     getTile(pt) {

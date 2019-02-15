@@ -21,7 +21,6 @@ GameEventManager.on('handle-key', (keyCode, shiftDown) => {
     }
     if (moves.hasOwnProperty(keyCode)) {
         let [dx, dy] = moves[keyCode]
-        GameManager.player.moveBy(dx, dy)
-        GameManager.curMap.dirty = true
+        GameEventManager.dispatch('try-move', GameManager.player, dx, dy)
     }
 })

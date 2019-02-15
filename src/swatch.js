@@ -14,5 +14,8 @@ export default {
     bone: 'rgb(223,223,223)',
     blackiron: 'rgb(95,0,191)',
     yellow: "yellow",
-    white: "white"
+    white: "white",
+    flesh: 'rgb(255,159,127)',
+    crimson: 'crimson',
+    purple: 'purple',
 }

@@ -32,6 +32,7 @@ export let Drawable = new Mixin('drawable', 'drawable', {
     init(opts) {
         this.glyph = opts.glyph || '@'
         this.color = opts.color || 'white'
+        this.layer = opts.layer || 1
     },
     get displayString() {
         return decorate(this.name, this.color)
@@ -192,7 +193,7 @@ export let Inventory = new Mixin('inventory', 'inventory', {
     pickUp(itemOrEID) {
         let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
         if (this.bagsFull) {
-            whenIsPlayer(this, () => {
+            this.whenIsPlayer(() => {
                 let msg = `Bags are full; cannot pick up ${thing.displayString}`
                 GameEventManager.dispatch('message', msg)
             })
@@ -204,14 +205,14 @@ export let Inventory = new Mixin('inventory', 'inventory', {
             this.addInventory(thing.id)
             GameEventManager.dispatch('pickup', this, thing)
         } else {
-            whenIsPlayer(this, () => {
+            this.whenIsPlayer(() => {
                 GameEventManager.dispatch('message', `Cannot pick up ${thing.displayString}`)
             })
         }
     },
     drop(itemOrEID) {
         let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
-        whenIsPlayer(this, () => {
+        this.whenIsPlayer(() => {
             let msg = `Dropped ${thing.displayString}`
             GameEventManager.dispatch('message', msg)
         })
@@ -246,14 +247,87 @@ export let MoneyTaker = new Mixin('money-taker', 'money-taker', {
 export let Projectile = new Mixin('projectile', 'actor', {
     init(opts) {
         this.flightPath = opts.flightPath
+        this.payload = opts.payload || {}
+        this.spd = opts.spd || 10
+    },
+    getSpeed() {
+        return this.spd
     },
     act() {
-
+        let nxt = this.flightPath.shift()
+        let thing = GameManager.getOccupyingEntity(nxt)
+        if (thing) {
+            GameEventManager.dispatch('projectile-hit', this, thing, nxt)
+        } else if (!this.flightPath.length) {
+            GameEventManager.dispatch('projectile-hit', null, nxt)
+        } else {
+            this.move(nxt)
+        }
     }
 })
 
-export function whenIsPlayer(entity, calbak) {
-    entity.whenHas('player', calbak)
-}
+export let Vitals = new Mixin('vitals', 'vita;s', {
+    init(opts) {
+        this.alive = true
+        this.exhausted = false
+        this.vit = 0
+        this.edr = 0
+        this.edrMult = opts.edrMult || 2
+        this.vitMult = opts.vitMult || 1
+    },
+    get maxEdr() {
+        return this.getStat('stam') * this.edrMult
+    },
+    get maxVit() {
+        return this.getStat('stam') * this.vitMult
+    },
+    heal() {
+        this.vit = this.maxVit
+    },
+    restore() {
+        this.edr = this.maxEdr
+    },
+    changeVit(amt) {
+        this.vit -= amt
+        if (this.vit < 0) {
+            this.alive = false
+        }
+    },
+    changeEdr(amt) {
+        this.edr = Math.max(this.edr - amt, 0)
+        if (this.edr == 0) {
+            this.exhausted = true
+        }
+    }
+})
+
+export let Food = new Mixin('food', 'consumable', {
+    init(opts) {
+        this.amt = opts.amt
+    }
+})
+
+export let Healing = new Mixin('healing', 'consumable', {
+    init(opts) {
+        this.amt = opts.amt
+    }
+})
+
+export let Vision = new Mixin('vision', 'vision', {
+    init(opts) {
+        this.vision = opts.vision || 6
+        this.inView = []
+    }
+})
+
+export let PlayerActor = new Mixin('player-actor', 'actor', {
+    getSpeed() {
+        return this.getStat('spd')
+    },
+    act() {
+        //this.updateFOV()
+        //GameManager.pause()
+    }
+})
 
 

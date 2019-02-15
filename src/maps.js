@@ -3,16 +3,14 @@ import Swatch from './swatch'
 
 let MapList = {
     'mine-upper': {
-        id: 'Mines (Upper)',
+        name: 'Mines (Upper)',
         width: 85,
         height: 85,
         mapType: MapTypes.DIGGER,
         creatureTags: ['wolf'],
         minCreatures: 20,
         maxCreatures: 30,
-        minItems: 0,
         maxItems: 10,
-        minEquips: 0,
         maxEquips: 5,
         wallColor: Swatch.darkerSepia,
         floorColor: Swatch.sepia,
@@ -26,7 +24,7 @@ let MapList = {
         ]
     },
     'mine-lower': {
-        id: 'Mines (Lower)',
+        name: 'Mines (Lower)',
         width: 85,
         height: 85,
         mapType: MapTypes.DIGGER,
@@ -47,7 +45,7 @@ let MapList = {
         ]
     },
     'caves-upper': {
-        id: 'Caves (Upper)',
+        name: 'Caves (Upper)',
         width: 100,
         height: 100,
         mapType: MapTypes.CAVES,
@@ -68,7 +66,7 @@ let MapList = {
         ]
     },
     'caves-lower': {
-        id: 'Caves (Lower)',
+        name: 'Caves (Lower)',
         width: 100,
         height: 100,
         mapType: MapTypes.CAVES,
@@ -77,7 +75,6 @@ let MapList = {
         maxCreatures: 25,
         minItems: 1,
         maxItems: 10,
-        minEquips: 0,
         maxEquips: 5,
         zone: 'wolf-cave',
         connections: [
@@ -89,14 +86,13 @@ let MapList = {
         ]
     },
     crypt: {
-        id: 'Crypt',
+        name: 'Crypt',
         width: 150,
         height: 150,
         mapType: MapTypes.DIGGER,
         creatureTags: ['undead'],
         minCreatures: 10,
         maxCreatures: 20,
-        minItems: 0,
         maxItems: 20,
         minEquips: 1,
         maxEquips: 10,

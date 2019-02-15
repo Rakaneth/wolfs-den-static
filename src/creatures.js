@@ -1,5 +1,5 @@
 import Swatch from './swatch'
-import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats } from './mixin';
+import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats, Vitals, Vision, Inventory } from './mixin';
 
 const humanStartItems = [
     'ration',
@@ -17,15 +17,24 @@ const humanTags = [
     'humanoid',
     'human'
 ]
+const wolfTags = [
+    'animal',
+    'wolf'
+]
+const undeadTags = [
+    'undead'
+]
 const standardMixins = [
     Blocker,
     Mover,
     Position,
     Drawable,
-    PrimaryStats
+    PrimaryStats,
+    Vision,
+    Vitals
 ]
 
-const huamoidMixins = standardMixins.concat(EquipWearer, MoneyTaker)
+const huamoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory)
 const animalMixins = standardMixins.concat(DerivedStats)
 
 let CreatureList = {
@@ -94,16 +103,27 @@ let CreatureList = {
         color: Swatch.sepia,
         str: 15,
         spd: 15,
-        atp: 2,
+        dmg: 2,
         frequency: 10,
-        tags: [
-            'animal',
-            'wolf'
-        ],
+        tags: wolfTags,
         enemies: [
             'humanoid'
         ],
         mixins: animalMixins
+    },
+    zombie: {
+        name: 'zombie',
+        desc: 'Once an adventurer, now a reeking, animated corpse',
+        glyph: 'Z',
+        color: Swatch.purple,
+        str: 20,
+        spd: 5,
+        atp: -5,
+        dmg: 2,
+        frequency: 5,
+        tags: undeadTags,
+        enemies: ['humanoid', 'animal'],
+        mixins: huamoidMixins
     }
 }
 

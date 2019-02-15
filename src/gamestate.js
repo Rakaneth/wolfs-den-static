@@ -70,6 +70,10 @@ class GameState {
         return this.thingsAt(pt).some(el => el.has('blocker') && this.isHere(el))
     }
 
+    getOccupyingEntity(pt) {
+        return this.thingsAt(pt).find(en => en.has('blocker'))
+    }
+
     pause() {
         this.engine.lock()
     }
