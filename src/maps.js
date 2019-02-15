@@ -52,6 +52,8 @@ let MapList = {
         creatureTags: ['wolf', 'undead'],
         minCreatures: 20,
         maxCreatures: 30,
+        wallColor: 'darkgrey',
+        floorColor: 'grey',
         minItems: 3,
         maxItems: 10,
         minEquips: 1,
@@ -63,7 +65,8 @@ let MapList = {
                 twoWay: true,
                 direction: ConnectionDirections.DOWN
             }
-        ]
+        ],
+        lit: false
     },
     'caves-lower': {
         name: 'Caves (Lower)',
@@ -83,7 +86,8 @@ let MapList = {
                 twoWay: true,
                 direction: ConnectionDirections.DOWN
             }
-        ]
+        ],
+        lit: false
     },
     crypt: {
         name: 'Crypt',
@@ -98,7 +102,8 @@ let MapList = {
         maxEquips: 10,
         zone: 'wolf-cave',
         boss: 'crypt-lord',
-        loot: ['sun-blade']
+        loot: ['sun-blade'],
+        lit: false
     }
 }
 

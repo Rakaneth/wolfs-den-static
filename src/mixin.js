@@ -1,4 +1,4 @@
-import Point from './point'
+import Points from './point'
 import { PriStatNames, SecStatNames, listRemove, decorate } from './utils'
 import GameManager from './gamestate'
 import GameEventManager from './dispatcher'
@@ -203,6 +203,9 @@ export let Inventory = new Mixin('inventory', 'inventory', {
                 thing.mapID = null
             })
             this.addInventory(thing.id)
+            if (GameManager.inPlayerView(this)) {
+                GameEventManager.dispatch('message', `${this.displayString} picks up ${thing.displayString}`)
+            }
             GameEventManager.dispatch('pickup', this, thing)
         } else {
             this.whenIsPlayer(() => {
@@ -253,7 +256,7 @@ export let Projectile = new Mixin('projectile', 'actor', {
     getSpeed() {
         return this.spd
     },
-    act() {
+    takeAction() {
         let nxt = this.flightPath.shift()
         let thing = GameManager.getOccupyingEntity(nxt)
         if (thing) {
@@ -317,16 +320,19 @@ export let Vision = new Mixin('vision', 'vision', {
     init(opts) {
         this.vision = opts.vision || 6
         this.inView = []
-    }
+    },
+    canSee(ptOrThing) {
+        let pt = !!ptOrThing.pos ? ptOrThing.pos : ptOrThing
+        return this.inView.some(el => el.same(pt))
+    },
 })
 
 export let PlayerActor = new Mixin('player-actor', 'actor', {
     getSpeed() {
         return this.getStat('spd')
     },
-    act() {
-        //this.updateFOV()
-        //GameManager.pause()
+    takeAction() {
+        GameManager.pause()
     }
 })
 

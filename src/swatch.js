@@ -18,4 +18,6 @@ export default {
     flesh: 'rgb(255,159,127)',
     crimson: 'crimson',
     purple: 'purple',
+    exploredFloor: 'blue',
+    exploredWall: 'darkblue'
 }

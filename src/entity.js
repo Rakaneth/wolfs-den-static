@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4'
 import GameManager from './gamestate'
-import { decorate } from './utils';
+import { decorate, debugLog } from './utils';
 
 export default class Entity {
     constructor(opts = { mixins: [], tags: new Set() }) {
@@ -41,5 +41,15 @@ export default class Entity {
 
     whenIsPlayer(calbak) {
         this.whenHas('player', calbak)
+    }
+
+    act() {
+        this.whenHas('actor', () => {
+            debugLog('ACTION', `${this.name} takes action at time ${GameManager.clock}`)
+            this.whenHas('vision', () => {
+                this.gameMap.updateFOV(this)
+            })
+            this.takeAction()
+        })
     }
 }

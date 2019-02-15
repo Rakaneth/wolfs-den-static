@@ -9,6 +9,7 @@ GameEventManager.on('handle-key', (keyCode, shiftDown) => {
 })
 
 GameEventManager.on('handle-key', (keyCode, shiftDown) => {
+    let player = GameManager.player
     let moves = {
         [KEYS.VK_NUMPAD8]: DIRS[8][0],
         [KEYS.VK_NUMPAD9]: DIRS[8][1],
@@ -22,5 +23,14 @@ GameEventManager.on('handle-key', (keyCode, shiftDown) => {
     if (moves.hasOwnProperty(keyCode)) {
         let [dx, dy] = moves[keyCode]
         GameEventManager.dispatch('try-move', GameManager.player, dx, dy)
+    } else {
+        switch (keyCode) {
+            case KEYS.VK_COMMA:
+                GameEventManager.dispatch('loot-square', player, player.pos)
+                break;
+            default:
+            //TODO: add other keybinds
+            //do nothing
+        }
     }
 })

@@ -3,6 +3,7 @@ import { between, listRemove, clamp } from './utils'
 import Swatch from './swatch'
 import GameManager from './gamestate'
 import Point from './point';
+import { FOV } from 'rot-js'
 
 export let ConnectionDirections = {
     DOWN: "down",
@@ -39,11 +40,12 @@ export class GameMap {
         this.height = opts.height || 30
         this.lit = typeof (opts.lit) === 'undefined' ? true : opts.lit
         this._connections = {}
-        this.wallColor = opts.wallColor || Swatch.sepia
-        this.floorColor = opts.floorColor || Swatch.darkSepia
+        this.wallColor = opts.wallColor || Swatch.darkerSepia
+        this.floorColor = opts.floorColor || Swatch.sepia
         this.floors = []
         this.dirty = true
         this.name = opts.name
+        this._fov = new FOV.RecursiveShadowcasting((x, y) => this.isTransparent(new Point(x, y)))
     }
 
     getTile(pt) {
@@ -85,7 +87,9 @@ export class GameMap {
     }
 
     explore(pt) {
-        this._explored[pt.y][pt.x] = true
+        if (!this.isOOB(pt)) {
+            this._explored[pt.y][pt.x] = true
+        }
     }
 
     connect(connectOpts) {
@@ -127,6 +131,16 @@ export class GameMap {
         let left = calc(pt.x, this.width, sw)
         let top = calc(pt.y, this.height, sh)
         return new Point(left, top)
+    }
+
+    updateFOV(entity) {
+        let { x, y } = entity.pos
+        entity.inView = []
+        this._fov.compute(x, y, entity.vision, (vx, vy) => {
+            let pt = new Point(vx, vy)
+            entity.inView.push(pt)
+            entity.whenIsPlayer(() => this.explore(pt))
+        })
     }
 }
 

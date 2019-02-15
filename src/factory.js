@@ -200,6 +200,7 @@ export function buildPlayer(name, buildID, mapID) {
     baseOpts.mixins = baseOpts.mixins.concat(Player, PlayerActor)
     baseOpts.mapID = mapID
     baseOpts.name = name
+    baseOpts.capacity = 8
     debugLog('FACTORY', `Building player of race ${buildID} in ${mapID}`)
     let baseCreature = new Entity(baseOpts)
     if (baseOpts.startItems) {

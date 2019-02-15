@@ -38,6 +38,11 @@ class GameState {
     addEntity(entity) {
         this.entities[entity.id] = entity
         GameEventManager.dispatch('add-entity', entity)
+        entity.whenHas('actor', () => {
+            if (this.isHere(entity)) {
+                this.schedule(entity)
+            }
+        })
     }
 
     removeEntity(entity) {
@@ -55,7 +60,7 @@ class GameState {
     }
 
     thingsAt(pt) {
-        return Object.values(this.entities).filter(en => en.pos.same(pt) && this.isHere(en))
+        return Object.values(this.curEntities).filter(en => en.pos.same(pt) && this.isHere(en))
     }
 
     isEntityAt(entity, pt) {
@@ -99,7 +104,15 @@ class GameState {
     }
 
     get toDraw() {
-        return this.curEntities.filter(en => en.has('drawable') && !!en.pos).sort((fst, snd) => fst.layer - snd.layer)
+        return this.curEntities.filter(en => en.has('drawable') && !!en.pos && this.player.canSee(en)).sort((fst, snd) => fst.layer - snd.layer)
+    }
+
+    get clock() {
+        return this.scheduler.getTime()
+    }
+
+    inPlayerView(entity) {
+        return this.player.canSee(entity)
     }
 
 

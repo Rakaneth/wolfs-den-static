@@ -7,6 +7,7 @@ import { Display } from "rot-js";
 import Tiles from "../tile.js";
 import { between } from "../utils.js";
 import Point from "../point.js";
+import Swatch from "../swatch.js";
 export default {
   name: "map-display",
   props: {
@@ -38,6 +39,7 @@ export default {
     drawMap() {
       let curMap = this.gameState.curMap;
       if (curMap.dirty) {
+        this.display.clear();
         let player = this.gameState.player;
         let c = curMap.cam(player.pos, this.mapW, this.mapH);
         let w = c.x + this.mapW;
@@ -45,13 +47,23 @@ export default {
         for (let wx = c.x; wx < w; wx++) {
           for (let wy = c.y; wy < h; wy++) {
             let worldPt = new Point(wx, wy);
-            let sx = wx - c.x;
-            let sy = wy - c.y;
-            let t = curMap.getTile(worldPt);
-            if (t !== Tiles["null-tile"]) {
-              let fg = t.color;
-              let bg = t.bg || (t.walk ? curMap.floorColor : curMap.wallColor);
-              this.display.draw(sx, sy, t.display, fg, bg);
+            let ptVis = curMap.lit || player.canSee(worldPt);
+            let ptExplore = curMap.isExplored(worldPt);
+            if (ptVis || ptExplore) {
+              let sx = wx - c.x;
+              let sy = wy - c.y;
+              let t = curMap.getTile(worldPt);
+              if (t !== Tiles["null-tile"]) {
+                let fg, bg;
+                if (ptVis) {
+                  fg = t.color;
+                  bg = t.bg || (t.walk ? curMap.floorColor : curMap.wallColor);
+                } else {
+                  fg = t.color;
+                  bg = t.walk ? Swatch.exploredFloor : Swatch.exploredWall;
+                }
+                this.display.draw(sx, sy, t.display, fg, bg);
+              }
             }
           }
         }

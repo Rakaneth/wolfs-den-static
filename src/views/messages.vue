@@ -1,7 +1,7 @@
 <template>
   <div id="messages">
     <ul>
-      <li v-for="(msg, idx) in messages.slice().reverse()" :key="idx">{{ msg }}</li>
+      <li v-for="(msg, idx) in messages.slice().reverse()" :key="idx" v-html="msg"></li>
     </ul>
   </div>
 </template>
