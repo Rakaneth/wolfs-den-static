@@ -1,5 +1,5 @@
 import Points from './point'
-import { PriStatNames, SecStatNames, listRemove, decorate } from './utils'
+import { PriStatNames, SecStatNames, listRemove, decorate, clamp } from './utils'
 import GameManager from './gamestate'
 import GameEventManager from './dispatcher'
 
@@ -291,13 +291,13 @@ export let Vitals = new Mixin('vitals', 'vita;s', {
         this.edr = this.maxEdr
     },
     changeVit(amt) {
-        this.vit -= amt
+        this.vit = Math.min(this.maxVit, amt + this.vit)
         if (this.vit < 0) {
             this.alive = false
         }
     },
     changeEdr(amt) {
-        this.edr = Math.max(this.edr - amt, 0)
+        this.edr = clamp(this.edr + amt, 0, this.maxEdr)
         if (this.edr == 0) {
             this.exhausted = true
         }
@@ -307,12 +307,26 @@ export let Vitals = new Mixin('vitals', 'vita;s', {
 export let Food = new Mixin('food', 'consumable', {
     init(opts) {
         this.amt = opts.amt
+        this.uses = opts.uses || 1
+        this.usedMessage = opts.usedMessage || `<user> eats <item>.`
+    },
+    consume(user) {
+        let amt = Math.floor(this.amt * user.maxEdr)
+        user.changeEdr(amt)
+        GameEventManager.dispatch('used-item', user, this)
     }
 })
 
 export let Healing = new Mixin('healing', 'consumable', {
     init(opts) {
         this.amt = opts.amt
+        this.uses = opts.uses || 1
+        this.usedMessage = opts.usedMessage || `<user> uses <item>.`
+    },
+    consume(user) {
+        let amt = Math.floor(this.amt * user.maxEdr)
+        user.changeVit(amt)
+        GameEventManager.dispatch('used-item', user, this)
     }
 })
 

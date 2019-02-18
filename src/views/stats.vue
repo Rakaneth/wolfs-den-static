@@ -6,27 +6,17 @@
     <div class="grid-container">
       <pri-stats :creature="player"></pri-stats>
       <sec-stats :creature="player"></sec-stats>
-      <vitals :creature='player'></vitals>
+      <vitals :creature="player"></vitals>
     </div>
-    <div id="inventory">Inventory
-      <ul>
-        <li v-for="thing in player.inventoryEntities" :key="thing.id" :class="{eq: thing.equipped}">
-          {{ thing.name}}
-          <span v-if="thing.equipped">({{ thing.slot}})</span>
-          <button
-            v-if="thing.has('equipment')"
-            @click="toggleEquip(thing.id)"
-          >{{ thing.equipped ? 'Unequip' : 'Equip' }}</button>
-        </li>
-      </ul>
-    </div>
+    <inventory :gameState="gameState"></inventory>
   </div>
 </template>
 
 <script>
 import PriStats from "./pristats";
 import SecStats from "./secstats";
-import Vitals from './vitals';
+import Vitals from "./vitals";
+import Inventory from "./inventory";
 export default {
   name: "player-stats",
   props: {
@@ -37,20 +27,11 @@ export default {
       return this.gameState.player;
     }
   },
-  methods: {
-    toggleEquip(eID) {
-      let thing = this.gameState.entityByID(eID);
-      if (thing.equipped) {
-        this.player.dequip(eID);
-      } else {
-        this.player.equip(eID);
-      }
-    }
-  },
   components: {
     PriStats,
     SecStats,
-    Vitals
+    Vitals,
+    Inventory
   }
 };
 </script>
@@ -62,15 +43,6 @@ export default {
 
 button {
   display: inline;
-}
-
-.eq {
-  font-weight: bold;
-  color: crimson;
-}
-
-#inventory {
-  margin: 1em;
 }
 
 .lbl {

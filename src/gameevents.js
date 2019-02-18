@@ -35,3 +35,16 @@ GameEventManager.on('loot-square', (entity, pt) => {
         loot.forEach(thing => entity.pickUp(thing))
     })
 })
+
+GameEventManager.on('used-item', (user, consumed) => {
+    let msg = consumed.usedMessage
+        .replace('<user>', user.displayString)
+        .replace('<item>', consumed.displayString)
+    if (consumed.uses && --consumed.uses == 0) {
+        user.removeInventory(consumed.id)
+        GameManager.removeEntity(consumed)
+    }
+    if (GameManager.inPlayerView(user)) {
+        GameEventManager.dispatch('message', msg)
+    }
+})
