@@ -6,6 +6,7 @@
     <div class="grid-container">
       <pri-stats :creature="player"></pri-stats>
       <sec-stats :creature="player"></sec-stats>
+      <vitals :creature='player'></vitals>
     </div>
     <div id="inventory">Inventory
       <ul>
@@ -25,6 +26,7 @@
 <script>
 import PriStats from "./pristats";
 import SecStats from "./secstats";
+import Vitals from './vitals';
 export default {
   name: "player-stats",
   props: {
@@ -47,7 +49,8 @@ export default {
   },
   components: {
     PriStats,
-    SecStats
+    SecStats,
+    Vitals
   }
 };
 </script>
