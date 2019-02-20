@@ -47,4 +47,25 @@ GameEventManager.on('used-item', (user, consumed) => {
     if (GameManager.inPlayerView(user)) {
         GameEventManager.dispatch('message', msg)
     }
+    user.whenIsPlayer(() => GameManager.unpause())
+})
+
+GameEventManager.on('interact', (giver, receiver) => {
+    if (giver.has('faction') && giver.isEnemy(receiver)) {
+        GameEventManager.dispatch('basic-attack', giver, receiver)
+    } else {
+        GameEventManager.dispatch('swap', giver, receiver)
+    }
+})
+
+GameEventManager.on('swap', (mover, flipped) => {
+    let mPos = mover.pos
+    mover.pos = flipped.pos
+    flipped.pos = mPos
+    mover.whenIsPlayer(() => GameManager.unpause())
+    mover.gameMap.dirty = true
+})
+
+GameEventManager.on('basic-attack', (attacker, defender) => {
+    GameEventManager.dispatch('message', `${attacker.displayString} attacks ${defender.displayString}!`)
 })

@@ -1,5 +1,5 @@
 import Swatch from './swatch'
-import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats, Vitals, Vision, Inventory } from './mixin';
+import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats, Vitals, Vision, Inventory, Faction } from './mixin';
 
 const humanStartItems = [
     'ration',
@@ -31,7 +31,8 @@ const standardMixins = [
     Drawable,
     PrimaryStats,
     Vision,
-    Vitals
+    Vitals,
+    Faction
 ]
 
 const huamoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory)

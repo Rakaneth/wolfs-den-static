@@ -262,7 +262,7 @@ export let Projectile = new Mixin('projectile', 'actor', {
         if (thing) {
             GameEventManager.dispatch('projectile-hit', this, thing, nxt)
         } else if (!this.flightPath.length) {
-            GameEventManager.dispatch('projectile-hit', null, nxt)
+            GameEventManager.dispatch('projectile-hit', this, null, nxt)
         } else {
             this.move(nxt)
         }
@@ -347,6 +347,38 @@ export let PlayerActor = new Mixin('player-actor', 'actor', {
     },
     takeAction() {
         GameManager.pause()
+    }
+})
+
+export let Faction = new Mixin('faction', 'faction', {
+    init(opts) {
+        this.enemies = opts.enemies ? new Set(opts.enemies) : new Set()
+        this.allies = opts.allies ? new Set(opts.allies.concat(this.id)) : new Set([this.id])
+    },
+    isAlly(entity) {
+        let otherTags = [...entity.tags]
+        let myTags = [...this.tags]
+        let otherSearch = otherTags.some(tag => this.allies.has(tag))
+        let mySearch = myTags.some(tag => entity.allies && entity.allies.has(tag))
+        return otherSearch || mySearch
+    },
+    isEnemy(entity) {
+        let otherTags = [...entity.tags]
+        let myTags = [...this.tags]
+        let otherSearch = otherTags.some(tag => this.enemies.has(tag))
+        let mySearch = myTags.some(tag => entity.enemies && entity.enemies.has(tag))
+        return otherSearch || mySearch
+    },
+    isNeutral(entity) {
+        return !(this.isAlly(entity) || this.isEnemy(entity))
+    },
+    makeAlly(faction) {
+        this.allies.add(faction)
+        this.enemies.delete(faction)
+    },
+    makeEnemy(faction) {
+        this.enemies.add(faction)
+        this.allies.delete(faction)
     }
 })
 

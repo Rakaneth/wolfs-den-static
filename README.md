@@ -17,6 +17,7 @@ Warning: This may not receive updates quickly. I have a lot of these and I work 
 * Seeding items/creatures
 * Creature factory
 * Consumable items
+* Factions
 
 # WIP
 
