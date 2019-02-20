@@ -1,5 +1,6 @@
 <template>
-  <div id="inventory">Inventory
+  <div id="inventory">
+    Inventory {{player.inventoryEntities.length}} / {{player.capacity}}
     <ul>
       <li v-for="thing in player.inventoryEntities" :key="thing.id" :class="{eq: thing.equipped}">
         {{ thing.name}}
