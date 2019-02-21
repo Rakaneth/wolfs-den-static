@@ -3,6 +3,7 @@ import GameManager from './gamestate'
 import { debugLog } from './utils'
 import App from './views/app.vue'
 import { KEYS, DIRS } from 'rot-js'
+import { testDice } from './dice'
 
 GameEventManager.on('handle-key', (keyCode, shiftDown) => {
     debugLog('HANDLE-KEYS', `Keycode ${keyCode} pressed.${(shiftDown ? ' Shift is down.' : '')}`)
@@ -27,6 +28,9 @@ GameEventManager.on('handle-key', (keyCode, shiftDown) => {
         switch (keyCode) {
             case KEYS.VK_COMMA:
                 GameEventManager.dispatch('loot-square', player, player.pos)
+                break;
+            case KEYS.VK_T:
+                console.log(testDice())
                 break;
             default:
             //TODO: add other keybinds
