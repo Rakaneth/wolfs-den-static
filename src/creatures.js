@@ -35,7 +35,7 @@ const standardMixins = [
     Faction
 ]
 
-const huamoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory)
+const humanoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory)
 const animalMixins = standardMixins.concat(DerivedStats)
 
 let CreatureList = {
@@ -45,7 +45,7 @@ let CreatureList = {
         startItems: humanStartItems,
         frequency: 10,
         tags: humanTags,
-        mixins: huamoidMixins,
+        mixins: humanoidMixins,
     },
     keldun: {
         name: 'Keldunian',
@@ -53,7 +53,7 @@ let CreatureList = {
         startItems: humanStartItems,
         frequency: 8,
         tags: humanTags,
-        mixins: huamoidMixins,
+        mixins: humanoidMixins,
         startEquip: [
             { base: 'sword', mat: 'iron' },
             { base: 'breastplate', mat: 'wolfHide' }
@@ -74,7 +74,7 @@ let CreatureList = {
             'humanoid',
             'elf'
         ],
-        mixins: huamoidMixins
+        mixins: humanoidMixins
     },
     dwarf: {
         name: 'Dwarf',
@@ -87,7 +87,7 @@ let CreatureList = {
             'humanoid',
             'dwarf'
         ],
-        mixins: huamoidMixins
+        mixins: humanoidMixins
     },
     wolfborn: {
         name: 'Wolf-born',
@@ -103,7 +103,7 @@ let CreatureList = {
             'wolf',
             'shapechanger'
         ],
-        mixins: huamoidMixins
+        mixins: humanoidMixins
     },
     wolf: {
         name: 'wolf',
@@ -136,11 +136,28 @@ let CreatureList = {
         frequency: 5,
         tags: undeadTags,
         enemies: ['humanoid', 'animal'],
-        mixins: huamoidMixins,
+        mixins: humanoidMixins,
         randomEquip: [
             ['sword', 'axe', 'hammer'],
             ['armor']
         ]
+    },
+    'crypt-lord': {
+        name: 'The Margrave of Bones',
+        desc: 'A frightening crature, thin as a rail, radiating menace',
+        str: 50,
+        stam: 45,
+        spd: 30,
+        skl: 30,
+        sag: 35,
+        smt: 50,
+        dmg: 5,
+        color: Swatch.purple,
+        glyph: '@',
+        tags: undeadTags,
+        enemies: ['humanoid', 'animal'],
+        mixins: humanoidMixins,
+        //TODO: add fellhammer
     }
 }
 

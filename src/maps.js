@@ -102,7 +102,15 @@ let MapList = {
         maxEquips: 10,
         zone: 'wolf-cave',
         boss: 'crypt-lord',
-        loot: ['sun-blade'],
+        loot: [
+            {
+                id: 'sun-blade'
+            },
+            {
+                id: 'wizards-staff',
+                mat: 'bone'
+            }
+        ],
         lit: false
     }
 }

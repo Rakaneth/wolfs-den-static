@@ -32,27 +32,64 @@ function buildCaves(opts = { width: 30, height: 30 }) {
     for (let i = 0; i < 6; i++) {
         gen.create(cb)
     }
-    let seedItem = (entity => {
-        entity.pos = newMap.randomFloor()
-        GameManager.addEntity(entity)
-    })
     let numItems = GameManager.RNG.getUniformInt(opts.minItems || 0, opts.maxItems || 0)
     for (let i = 0; i < numItems; i++) {
         let toAdd = randomItem(opts.itemTags, opts.id)
-        seedItem(toAdd)
+        seedItem(toAdd, newMap)
     }
     let numEquips = GameManager.RNG.getUniformInt(opts.minEquips || 0, opts.maxEquips || 0)
     for (let j = 0; j < numEquips; j++) {
         let eq = randomEq(opts.equipTags, opts.id)
-        seedItem(eq)
+        seedItem(eq, newMap)
     }
     let numCreatures = GameManager.RNG.getUniformInt(opts.minCreatures || 0, opts.maxCreatures || 0)
     for (let k = 0; k < numCreatures; k++) {
         let cr = randomCreature(opts.creatureTags, opts.id)
-        seedItem(cr)
+        seedItem(cr, newMap)
+    }
+    if (opts.boss) {
+        debugLog('FACTORY', `Putting boss ${opts.boss} in ${opts.id}`)
+        seedBoss(newMap, opts, gen)
+    }
+    if (opts.loot) {
+        opts.loot.forEach(item => {
+            let { id, mat } = item
+            let lt = buildEquip(id, mat, opts.id)
+            debugLog('FACTORY', `Putting guaranteed loot item ${id} in ${opts.id}`)
+            seedItem(lt, newMap)
+        })
     }
     return newMap
 }
+
+function seedBoss(mp, mapOpts, gen) {
+    let boss = buildCreature(mapOpts.boss, mp.id)
+    switch (mapOpts.mapType) {
+        case MapTypes.CAVES:
+            seedItem(boss, mp)
+            break;
+        case MapTypes.DIGGER:
+            let rooms = gen.getRooms()
+            let bossRoom = GameManager.RNG.getItem(rooms)
+            putInRoom(bossRoom, boss)
+        default:
+            seedItem(boss, mp)
+    }
+}
+
+
+function seedItem(entity, newMap) {
+    entity.pos = newMap.randomFloor()
+    GameManager.addEntity(entity)
+}
+
+function putInRoom(r, entity) {
+    let newX = GameManager.RNG.getUniformInt(r.getLeft(), r.getRight())
+    let newY = GameManager.RNG.getUniformInt(r.getTop(), r.getBottom())
+    entity.pos = new Point(newX, newY)
+    GameManager.addEntity(entity)
+}
+
 
 function buildDigger(opts = { width: 30, height: 30 }) {
     let gen = new Map.Digger(opts.width, opts.height)
@@ -66,12 +103,7 @@ function buildDigger(opts = { width: 30, height: 30 }) {
         })
     })
     let numItems = GameManager.RNG.getUniformInt(opts.minItems || 0, opts.maxItems || 0)
-    let putInRoom = (r, entity) => {
-        let newX = GameManager.RNG.getUniformInt(r.getLeft(), r.getRight())
-        let newY = GameManager.RNG.getUniformInt(r.getTop(), r.getBottom())
-        entity.pos = new Point(newX, newY)
-        GameManager.addEntity(entity)
-    }
+
     for (let i = 0; i < numItems; i++) {
         let randomRoom = GameManager.RNG.getItem(rooms)
         let toAdd = randomItem(opts.itemTags, opts.id)
@@ -88,6 +120,19 @@ function buildDigger(opts = { width: 30, height: 30 }) {
         let randomRoomCreat = GameManager.RNG.getItem(rooms)
         let cr = randomCreature(opts.creatureTags, opts.id)
         putInRoom(randomRoomCreat, cr)
+    }
+    if (opts.boss) {
+        debugLog('FACTORY', `Putting boss ${opts.boss} in ${opts.id}`)
+        seedBoss(newMap, opts, gen)
+    }
+    if (opts.loot) {
+        opts.loot.forEach(item => {
+            let { mat, id } = item
+            let lt = buildEquip(id, mat, opts.id)
+            debugLog('FACTORY', `Putting guaranteed loot item ${id} in ${opts.id}`)
+            let ltRm = GameManager.RNG.getItem(rooms)
+            putInRoom(ltRm, lt)
+        })
     }
     return newMap
 }
