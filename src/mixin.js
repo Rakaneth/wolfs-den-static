@@ -2,6 +2,8 @@ import Points from './point'
 import { PriStatNames, SecStatNames, listRemove, decorate, clamp } from './utils'
 import GameManager from './gamestate'
 import GameEventManager from './dispatcher'
+import { timingSafeEqual } from 'crypto';
+import { EquipSlots } from './equipslots'
 
 
 class Mixin {
@@ -118,7 +120,9 @@ export let DerivedStats = new Mixin('derived-stats', 'derived-stats', {
 export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
     equip(eID) {
         let eq = GameManager.entityByID(eID)
-
+        this.allEquipped
+            .filter(el => el.slot === eq.slot)
+            .forEach(thing => thing.equipped = false)
         if (eq.has('equipment')) {
             eq.equipped = true
         }
@@ -154,7 +158,7 @@ export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
                     toAdd = this['spd'] || 0
                     break;
                 case 'tou':
-                    toAdd = this['stam'] || 0
+                    toAdd = (this['stam'] || 0) + this.getEquippedSlot(EquipSlots.ARMOR, 'hardness')
                     break;
                 case 'dmg':
                     toAdd = this.getBonus('str')
@@ -176,6 +180,10 @@ export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
     },
     getBonus(stat) {
         return Math.floor(this.getStat(stat) / 10)
+    },
+    getEquippedSlot(slot, stat) {
+        let eq = this.allEquipped.find(el => el.slot === slot)
+        return eq ? eq[stat] || 0 : 0
     }
 })
 

@@ -13,6 +13,8 @@ const naturalWeaponTags = [
 ]
 
 const baseWeaponTags = ['weapon']
+const baseArmorTags = ['armor']
+
 
 const baseMixins = [
     Carryable,
@@ -86,7 +88,7 @@ let EquipList = {
         damageType: DamageTypes.SLASH,
         equipType: EquipTypes.AXE,
         mixins: baseMixins,
-        tags: baseWeaponTags,
+        tags: baseWeaponTags.concat('metal', 'bone'),
         frequency: 5
     },
     sword: {
@@ -99,7 +101,7 @@ let EquipList = {
         dmg: 6,
         damageType: DamageTypes.SLASH,
         equipType: EquipTypes.SWORD,
-        tags: baseWeaponTags,
+        tags: baseWeaponTags.concat('metal', 'bone'),
         mixins: baseMixins,
         frequency: 5
     },
@@ -114,7 +116,7 @@ let EquipList = {
         dmg: 3,
         damageType: DamageTypes.MAGIC,
         equipType: EquipTypes.STAFF,
-        tags: baseWeaponTags,
+        tags: baseWeaponTags.concat('bone', 'wood'),
         mixins: baseMixins,
         frequency: 3
     },
@@ -128,9 +130,33 @@ let EquipList = {
         dmg: 4,
         damageType: DamageTypes.PIERCE,
         equipType: EquipTypes.LIGHT,
-        tags: baseWeaponTags,
+        tags: baseWeaponTags.concat('metal'),
         mixins: baseMixins,
         frequency: 3
+    },
+    chain: {
+        name: '<material> chain',
+        desc: 'A chain hauberk made from <material>',
+        slot: EquipSlots.ARMOR,
+        glyph: ')',
+        material: true,
+        dfp: 7,
+        equipType: EquipTypes.ARMOR,
+        tags: baseArmorTags.concat('metal'),
+        mixins: baseMixins,
+        frequency: 2
+    },
+    breastplate: {
+        name: '<material> breastplate',
+        desc: 'Armor covering the chest and torso, made from <material>',
+        slot: EquipSlots.ARMOR,
+        glyph: ']',
+        material: true,
+        dfp: 5,
+        equipType: EquipTypes.ARMOR,
+        tags: baseArmorTags.concat('metal', 'leather', 'bone'),
+        mixins: baseMixins,
+        frequency: 4
     }
 }
 

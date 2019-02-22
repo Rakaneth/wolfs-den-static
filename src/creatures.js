@@ -45,7 +45,7 @@ let CreatureList = {
         startItems: humanStartItems,
         frequency: 10,
         tags: humanTags,
-        mixins: huamoidMixins
+        mixins: huamoidMixins,
     },
     keldun: {
         name: 'Keldunian',
@@ -53,7 +53,11 @@ let CreatureList = {
         startItems: humanStartItems,
         frequency: 8,
         tags: humanTags,
-        mixins: huamoidMixins
+        mixins: huamoidMixins,
+        startEquip: [
+            { base: 'sword', mat: 'iron' },
+            { base: 'breastplate', mat: 'wolfHide' }
+        ]
     },
     elf: {
         name: 'Elf',

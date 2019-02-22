@@ -11,6 +11,7 @@ import { GameMap, MapTypes, ConnectionDirections } from './gamemap'
 import GameManager from './gamestate'
 import { debugLog } from './utils';
 import { Player, PlayerActor } from './mixin';
+import { EquipSlots } from './equipslots';
 
 function createCB(gMap) {
     return function (x, y, v) {
@@ -37,33 +38,17 @@ function buildCaves(opts = { width: 30, height: 30 }) {
     })
     let numItems = GameManager.RNG.getUniformInt(opts.minItems || 0, opts.maxItems || 0)
     for (let i = 0; i < numItems; i++) {
-        let isHealing = GameManager.RNG.getUniform() > 0.5
-        let table, toAdd, result
-        if (isHealing) {
-            table = probTableFromTags(HealingList, opts.itemTags)
-            result = GameManager.RNG.getWeightedValue(table)
-            toAdd = buildHeal(result, opts.id)
-        } else {
-            table = probTableFromTags(FoodList, opts.itemTags)
-            result = GameManager.RNG.getWeightedValue(table)
-            toAdd = buildFood(result, opts.id)
-        }
+        let toAdd = randomItem(opts.itemTags, opts.id)
         seedItem(toAdd)
     }
     let numEquips = GameManager.RNG.getUniformInt(opts.minEquips || 0, opts.maxEquips || 0)
     for (let j = 0; j < numEquips; j++) {
-        let eqTable = probTableFromTags(EquipList, opts.equipTags)
-        let eqResult = GameManager.RNG.getWeightedValue(eqTable)
-        let matTable = probTableFromTags(Materials)
-        let mat = GameManager.RNG.getWeightedValue(matTable)
-        let eq = buildEquip(eqResult, mat, opts.id)
+        let eq = randomEq(opts.equipTags, opts.id)
         seedItem(eq)
     }
     let numCreatures = GameManager.RNG.getUniformInt(opts.minCreatures || 0, opts.maxCreatures || 0)
     for (let k = 0; k < numCreatures; k++) {
-        let crTable = probTableFromTags(CreatureList, opts.creatureTags)
-        let crResult = GameManager.RNG.getWeightedValue(crTable)
-        let cr = buildCreature(crResult, opts.id)
+        let cr = randomCreature(opts.creatureTags, opts.id)
         seedItem(cr)
     }
     return newMap
@@ -89,35 +74,19 @@ function buildDigger(opts = { width: 30, height: 30 }) {
     }
     for (let i = 0; i < numItems; i++) {
         let randomRoom = GameManager.RNG.getItem(rooms)
-        let isHealing = GameManager.RNG.getUniform() > 0.5
-        let table, toAdd, result
-        if (isHealing) {
-            table = probTableFromTags(HealingList, opts.itemTags)
-            result = GameManager.RNG.getWeightedValue(table)
-            toAdd = buildHeal(result, opts.id)
-        } else {
-            table = probTableFromTags(FoodList, opts.itemTags)
-            result = GameManager.RNG.getWeightedValue(table)
-            toAdd = buildFood(result, opts.id)
-        }
+        let toAdd = randomItem(opts.itemTags, opts.id)
         putInRoom(randomRoom, toAdd)
     }
     let numEquips = GameManager.RNG.getUniformInt(opts.minEquips || 0, opts.maxEquips || 0)
     for (let j = 0; j < numEquips; j++) {
         let randomRoomEq = GameManager.RNG.getItem(rooms)
-        let eqTable = probTableFromTags(EquipList, opts.equipTags)
-        let eqResult = GameManager.RNG.getWeightedValue(eqTable)
-        let matTable = probTableFromTags(Materials)
-        let mat = GameManager.RNG.getWeightedValue(matTable)
-        let eq = buildEquip(eqResult, mat, opts.id)
+        let eq = randomEq(opts.equipTags, opts.id)
         putInRoom(randomRoomEq, eq)
     }
     let numCreatures = GameManager.RNG.getUniformInt(opts.minCreatures || 0, opts.maxCreatures || 0)
     for (let k = 0; k < numCreatures; k++) {
         let randomRoomCreat = GameManager.RNG.getItem(rooms)
-        let crTable = probTableFromTags(CreatureList, opts.creatureTags)
-        let crResult = GameManager.RNG.getWeightedValue(crTable)
-        let cr = buildCreature(crResult, opts.id)
+        let cr = randomCreature(opts.creatureTags, opts.id)
         putInRoom(randomRoomCreat, cr)
     }
     return newMap
@@ -137,11 +106,17 @@ function buildMap(mapID, opts) {
     return newMap
 }
 
-function probTableFromTags(table, tags) {
+function probTableFromTags(table, tags, matchAll = false) {
     let cands = {}
     Object.entries(table).forEach(entry => {
         let [id, data] = entry
-        if (data.frequency && (!tags || tags.some(tag => data.tags.includes(tag)))) {
+        let yes
+        if (matchAll) {
+            yes = !!tags && tags.every(tag => data.tags.includes(tag))
+        } else {
+            yes = !!tags && tags.some(tag => data.tags.includes(tag))
+        }
+        if (data.frequency && (!tags || yes)) {
             cands[id] = data.frequency
         }
     })
@@ -167,7 +142,11 @@ function buildHeal(buildID, mapID = null) {
 }
 
 function buildCreature(buildID, mapID = null) {
-    let creatureOpts = CreatureList[buildID]
+    let creatureOpts = {}
+    Object.entries(CreatureList[buildID]).forEach(e => {
+        let [k, v] = e
+        creatureOpts[k] = v
+    })
     creatureOpts.layer = 3
     debugLog('FACTORY', `building creature ${buildID}${(mapID ? ` in map ${mapID}` : '')}`)
     if (mapID) {
@@ -189,13 +168,57 @@ function buildCreature(buildID, mapID = null) {
             GameManager.addEntity(thing)
         })
     }
+    if (creatureOpts.startEquip) {
+        creatureOpts.startEquip.forEach(thing => {
+            let { base, mat } = thing
+            let eq = buildEquip(base, mat)
+            newCreature.addInventory(eq.id)
+            GameManager.addEntity(eq)
+            newCreature.equip(eq.id)
+        })
+    }
     newCreature.heal()
     newCreature.restore()
     return newCreature
 }
 
+function randomEq(tagList, mapID, starting = false) {
+    let eqTable = probTableFromTags(EquipList, tagList)
+    let eqResult = GameManager.RNG.getWeightedValue(eqTable)
+    let eqOpts = EquipList[eqResult]
+    let matTags = starting ? eqOpts.tags.concat('starting') : eqOpts.tags
+    let matTable = probTableFromTags(Materials, matTags, starting)
+    let mat = GameManager.RNG.getWeightedValue(matTable)
+    return buildEquip(eqResult, mat, mapID)
+}
+
+function randomCreature(tagList, mapID) {
+    let crTable = probTableFromTags(CreatureList, tagList)
+    let crResult = GameManager.RNG.getWeightedValue(crTable)
+    return buildCreature(crResult, mapID)
+}
+
+function randomItem(tagList, mapID) {
+    let isHealing = GameManager.RNG.getUniform() > 0.5
+    let table, toAdd, result
+    if (isHealing) {
+        table = probTableFromTags(HealingList, tagList)
+        result = GameManager.RNG.getWeightedValue(table)
+        toAdd = buildHeal(result, mapID)
+    } else {
+        table = probTableFromTags(FoodList, tagList)
+        result = GameManager.RNG.getWeightedValue(table)
+        toAdd = buildFood(result, mapID)
+    }
+    return toAdd
+}
+
 export function buildPlayer(name, buildID, mapID) {
-    let baseOpts = CreatureList[buildID]
+    let baseOpts = {}
+    Object.entries(CreatureList[buildID]).forEach(e => {
+        let [k, v] = e
+        baseOpts[k] = v
+    })
     baseOpts.layer = 4
     baseOpts.mixins = baseOpts.mixins.concat(Player, PlayerActor)
     baseOpts.mapID = mapID
@@ -216,6 +239,15 @@ export function buildPlayer(name, buildID, mapID) {
             }
             baseCreature.addInventory(thing.id)
             GameManager.addEntity(thing)
+        })
+    }
+    if (baseOpts.startEquip) {
+        baseOpts.startEquip.forEach(thing => {
+            let { base, mat } = thing
+            let eq = buildEquip(base, mat)
+            baseCreature.addInventory(eq.id)
+            GameManager.addEntity(eq)
+            baseCreature.equip(eq.id)
         })
     }
     baseCreature.heal()
@@ -262,7 +294,11 @@ export function buildAllMaps() {
 }
 
 export function buildEquip(buildID, matID = null, mapID = null) {
-    let baseOpts = EquipList[buildID]
+    let baseOpts = {}
+    Object.entries(EquipList[buildID]).forEach(e => {
+        let [k, v] = e
+        baseOpts[k] = v
+    })
     baseOpts.layer = 2
     debugLog('FACTORY', `Building equip ${buildID}${(mapID ? ` in map ${mapID}` : '')}`)
     if (!baseOpts) {

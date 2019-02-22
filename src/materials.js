@@ -12,7 +12,8 @@ let Materials = {
         hammer: {
             dmg: 1
         },
-        frequency: 3
+        frequency: 3,
+        tags: ['wood', 'starting']
     },
     iron: {
         name: 'iron',
@@ -31,7 +32,8 @@ let Materials = {
         armor: {
             atp: -5
         },
-        frequency: 5
+        frequency: 5,
+        tags: ['metal', 'starting']
     },
     steel: {
         name: 'steel',
@@ -54,7 +56,8 @@ let Materials = {
             atp: 10,
             dmg: 2
         },
-        frequency: 4
+        frequency: 4,
+        tags: ['metal'],
     },
     bone: {
         name: 'bone',
@@ -73,7 +76,8 @@ let Materials = {
             pwr: 10,
             wil: 5
         },
-        frequency: 2
+        frequency: 2,
+        tags: ['bone']
     },
     blackiron: {
         name: 'blackiron',
@@ -110,7 +114,18 @@ let Materials = {
             pwr: -20,
             wil: -20
         },
-        frequency: 1
+        frequency: 1,
+        tags: ['metal']
+    },
+    wolfHide: {
+        name: 'wolf-hide',
+        color: Swatch.sepia,
+        hardness: 5,
+        armor: {
+            res: 1,
+        },
+        frequency: 5,
+        tags: ['leather', 'starting']
     }
 }
 
