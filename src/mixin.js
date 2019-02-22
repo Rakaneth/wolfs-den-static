@@ -59,6 +59,9 @@ export let PrimaryStats = new Mixin('primary-stats', 'primary-stats', {
         PriStatNames.forEach(stat => {
             this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 10
         })
+        SecStatNames.forEach(stat => {
+            this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 0
+        })
     }
 })
 
@@ -79,6 +82,11 @@ export let Equipment = new Mixin('equipment', 'item', {
 })
 
 export let DerivedStats = new Mixin('derived-stats', 'derived-stats', {
+    init(opts) {
+        SecStatNames.forEach(stat => {
+            this[stat] = typeof (opts[stat]) === 'number' ? opts[stat] : 0
+        })
+    },
     getStat(stat) {
         let isPrimary = PriStatNames.includes(stat)
         let base = this[stat] || 0
@@ -158,7 +166,8 @@ export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
                     toAdd = this['spd'] || 0
                     break;
                 case 'tou':
-                    toAdd = (this['stam'] || 0) + this.getEquippedSlot(EquipSlots.ARMOR, 'hardness')
+                    let arm = this.getEquippedSlot(EquipSlots.ARMOR)
+                    toAdd = (this['stam'] || 0) + (arm ? arm.hardness : 0)
                     break;
                 case 'dmg':
                     toAdd = this.getBonus('str')
@@ -181,9 +190,9 @@ export let EquipWearer = new Mixin('equip-wearer', 'derived-stats', {
     getBonus(stat) {
         return Math.floor(this.getStat(stat) / 10)
     },
-    getEquippedSlot(slot, stat) {
+    getEquippedSlot(slot) {
         let eq = this.allEquipped.find(el => el.slot === slot)
-        return eq ? eq[stat] || 0 : 0
+        return eq
     }
 })
 

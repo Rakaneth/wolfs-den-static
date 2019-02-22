@@ -96,6 +96,7 @@ let CreatureList = {
         stam: 15,
         smt: 5,
         skl: 5,
+        dmg: 2,
         frequency: 3,
         tags: [
             'humanoid',
