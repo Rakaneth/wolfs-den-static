@@ -168,9 +168,19 @@ function buildCreature(buildID, mapID = null) {
         creatureOpts.startEquip.forEach(thing => {
             let { base, mat } = thing
             let eq = buildEquip(base, mat)
+            debugLog('FACTORY', `Building ${eq.name} for ${newCreature.name}`)
             newCreature.addInventory(eq.id)
             GameManager.addEntity(eq)
             newCreature.equip(eq.id)
+        })
+    }
+    if (creatureOpts.randomEquip) {
+        creatureOpts.randomEquip.forEach(list => {
+            let rEQ = randomEq(list, mapID)
+            debugLog('FACTORY', `Building ${rEQ.name} for ${newCreature.name}`)
+            newCreature.addInventory(rEQ.id)
+            GameManager.addEntity(rEQ)
+            newCreature.equip(rEQ.id)
         })
     }
     newCreature.heal()

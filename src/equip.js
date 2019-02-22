@@ -4,7 +4,8 @@ import { Carryable, Position, Drawable, Equipment } from './mixin';
 
 const markTags = [
     'holy',
-    'dragon'
+    'dragon',
+    'trinket'
 ]
 
 const naturalWeaponTags = [
@@ -88,7 +89,7 @@ let EquipList = {
         damageType: DamageTypes.SLASH,
         equipType: EquipTypes.AXE,
         mixins: baseMixins,
-        tags: baseWeaponTags.concat('metal', 'bone'),
+        tags: baseWeaponTags.concat('metal', 'bone', 'axe'),
         frequency: 5
     },
     sword: {
@@ -101,7 +102,7 @@ let EquipList = {
         dmg: 6,
         damageType: DamageTypes.SLASH,
         equipType: EquipTypes.SWORD,
-        tags: baseWeaponTags.concat('metal', 'bone'),
+        tags: baseWeaponTags.concat('metal', 'bone', 'sword'),
         mixins: baseMixins,
         frequency: 5
     },
@@ -116,7 +117,7 @@ let EquipList = {
         dmg: 3,
         damageType: DamageTypes.MAGIC,
         equipType: EquipTypes.STAFF,
-        tags: baseWeaponTags.concat('bone', 'wood'),
+        tags: baseWeaponTags.concat('bone', 'wood', 'staff'),
         mixins: baseMixins,
         frequency: 3
     },
@@ -130,7 +131,7 @@ let EquipList = {
         dmg: 4,
         damageType: DamageTypes.PIERCE,
         equipType: EquipTypes.LIGHT,
-        tags: baseWeaponTags.concat('metal'),
+        tags: baseWeaponTags.concat('metal', 'light'),
         mixins: baseMixins,
         frequency: 3
     },
@@ -142,7 +143,7 @@ let EquipList = {
         material: true,
         dfp: 7,
         equipType: EquipTypes.ARMOR,
-        tags: baseArmorTags.concat('metal'),
+        tags: baseArmorTags.concat('metal', 'armor'),
         mixins: baseMixins,
         frequency: 2
     },
@@ -154,7 +155,7 @@ let EquipList = {
         material: true,
         dfp: 5,
         equipType: EquipTypes.ARMOR,
-        tags: baseArmorTags.concat('metal', 'leather', 'bone'),
+        tags: baseArmorTags.concat('metal', 'leather', 'bone', 'armor'),
         mixins: baseMixins,
         frequency: 4
     }

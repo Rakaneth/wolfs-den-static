@@ -57,6 +57,10 @@ let CreatureList = {
         startEquip: [
             { base: 'sword', mat: 'iron' },
             { base: 'breastplate', mat: 'wolfHide' }
+        ],
+        randomEquip: [
+            ['sword', 'axe', 'light'],
+            ['armor']
         ]
     },
     elf: {
@@ -114,6 +118,9 @@ let CreatureList = {
         enemies: [
             'humanoid'
         ],
+        allies: [
+            'wolf',
+        ],
         mixins: animalMixins
     },
     zombie: {
@@ -128,7 +135,11 @@ let CreatureList = {
         frequency: 5,
         tags: undeadTags,
         enemies: ['humanoid', 'animal'],
-        mixins: huamoidMixins
+        mixins: huamoidMixins,
+        randomEquip: [
+            ['sword', 'axe', 'hammer'],
+            ['armor']
+        ]
     }
 }
 

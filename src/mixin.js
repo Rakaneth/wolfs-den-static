@@ -375,7 +375,7 @@ export let Faction = new Mixin('faction', 'faction', {
         let myTags = [...this.tags]
         let otherSearch = otherTags.some(tag => this.enemies.has(tag))
         let mySearch = myTags.some(tag => entity.enemies && entity.enemies.has(tag))
-        return otherSearch || mySearch
+        return (otherSearch || mySearch) && !this.isAlly(entity)
     },
     isNeutral(entity) {
         return !(this.isAlly(entity) || this.isEnemy(entity))

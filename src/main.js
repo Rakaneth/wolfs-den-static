@@ -6,7 +6,7 @@ import './handlekeys'
 import { buildAllMaps, buildPlayer } from './factory';
 
 buildAllMaps()
-let player = buildPlayer('Oglebane', 'keldun', 'caves-upper')
+let player = buildPlayer('Oglebane', 'wolfborn', 'caves-upper')
 player.pos = GameManager.curMap.randomFloor()
 GameManager.start()
 let MainComponent = Vue.extend(App)
