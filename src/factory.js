@@ -9,7 +9,7 @@ import { Map } from 'rot-js'
 import Point from './point';
 import { GameMap, MapTypes, ConnectionDirections } from './gamemap'
 import GameManager from './gamestate'
-import { debugLog } from './utils';
+import { debugLog, deepClone } from './utils';
 import { Player, PlayerActor } from './mixin';
 import { EquipSlots } from './equipslots';
 
@@ -124,7 +124,7 @@ function probTableFromTags(table, tags, matchAll = false) {
 }
 
 function buildFood(buildID, mapID = null) {
-    let foodOpts = FoodList[buildID]
+    let foodOpts = deepClone(FoodList[buildID])
     debugLog('FACTORY', `Building food item ${buildID}${(mapID ? ` in map ${mapID}` : '')}`)
     if (mapID) {
         foodOpts.mapID = mapID
@@ -133,7 +133,7 @@ function buildFood(buildID, mapID = null) {
 }
 
 function buildHeal(buildID, mapID = null) {
-    let healOpts = HealingList[buildID]
+    let healOpts = deepClone(HealingList[buildID])
     debugLog('FACTORY', `Building healing item ${buildID}${(mapID ? ` in map ${mapID}` : '')}`)
     if (mapID) {
         healOpts.mapID = mapID
@@ -142,11 +142,7 @@ function buildHeal(buildID, mapID = null) {
 }
 
 function buildCreature(buildID, mapID = null) {
-    let creatureOpts = {}
-    Object.entries(CreatureList[buildID]).forEach(e => {
-        let [k, v] = e
-        creatureOpts[k] = v
-    })
+    let creatureOpts = deepClone(CreatureList[buildID])
     creatureOpts.layer = 3
     debugLog('FACTORY', `building creature ${buildID}${(mapID ? ` in map ${mapID}` : '')}`)
     if (mapID) {
@@ -214,11 +210,7 @@ function randomItem(tagList, mapID) {
 }
 
 export function buildPlayer(name, buildID, mapID) {
-    let baseOpts = {}
-    Object.entries(CreatureList[buildID]).forEach(e => {
-        let [k, v] = e
-        baseOpts[k] = v
-    })
+    let baseOpts = deepClone(CreatureList[buildID])
     baseOpts.layer = 4
     baseOpts.mixins = baseOpts.mixins.concat(Player, PlayerActor)
     baseOpts.mapID = mapID

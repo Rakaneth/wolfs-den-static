@@ -31,3 +31,18 @@ export function listRemove(list, val) {
 export function debugLog(tag, text) {
     console.log(`[${tag}] ${text}`)
 }
+
+export function deepClone(o) {
+    let out, v, k
+    out = Array.isArray(o) ? [] : {}
+    for (k in o) {
+        let desc = Object.getOwnPropertyDescriptor(o, k)
+        if (desc.get) {
+            Object.defineProperty(out, k, desc)
+        } else {
+            v = o[k]
+            out[k] = (typeof (v) === 'object' && v !== null) ? deepClone(v) : v
+        }
+    }
+    return out
+}
