@@ -44,6 +44,7 @@ export let Player = new Mixin('player', 'player')
 export let Blocker = new Mixin('blocker', 'blocker')
 export let Carryable = new Mixin('carryable', 'carryable')
 export let DoorOpener = new Mixin('door-opener', 'door-opener')
+export let CorpseLeaver = new Mixin('corpse-leaver', 'corpse-leaver')
 export let Mover = new Mixin('mover', 'mover', {
     move(pt) {
         if (this.has('position')) {
@@ -252,7 +253,7 @@ export let Inventory = new Mixin('inventory', 'inventory', {
 
 export let MoneyDrop = new Mixin('money-drop', 'money-drop', {
     init(opts) {
-        this.amt = GameManager.RNG.getUniformInt(opts.minCoins, opts.maxCoins)
+        this.amt = GameManager.RNG.getUniformInt(opts.minCoins || 0, opts.maxCoins || 0)
     }
 })
 

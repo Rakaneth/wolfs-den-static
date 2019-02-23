@@ -76,3 +76,14 @@ GameEventManager.on('swap', (mover, flipped) => {
 GameEventManager.on('basic-attack', (attacker, defender) => {
     GameEventManager.dispatch('message', `${attacker.displayString} attacks ${defender.displayString}!`)
 })
+
+GameEventManager.on('death', (slain, killer) => {
+    if (!slain.alive) {
+        slain.whenHas('inventory', () => {
+            slain.inventory.forEach(itemID => {
+                slain.drop(itemID)
+            })
+        })
+        GameManager.removeEntity(slain)
+    }
+})

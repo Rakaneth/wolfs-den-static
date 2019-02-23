@@ -12,6 +12,7 @@ import GameManager from './gamestate'
 import { debugLog, deepClone } from './utils';
 import { Player, PlayerActor } from './mixin';
 import { EquipSlots } from './equipslots';
+import MoneyList from './money';
 
 function createCB(gMap) {
     return function (x, y, v) {
@@ -186,6 +187,16 @@ function buildHeal(buildID, mapID = null) {
     return new Entity(healOpts)
 }
 
+function buildMoney(buildID, mapID = null) {
+    let moneyOpts = deepClone(MoneyList[buildID])
+    if (mapID) {
+        moneyOpts.mapID = mapID
+    }
+    let cash = new Entity(moneyOpts)
+    debugLog('FACTORY', `Giving ${cash.amt} nits`)
+    return cash
+}
+
 function buildCreature(buildID, mapID = null) {
     let creatureOpts = deepClone(CreatureList[buildID])
     creatureOpts.layer = 3
@@ -203,6 +214,9 @@ function buildCreature(buildID, mapID = null) {
                     break;
                 case FoodList.hasOwnProperty(item):
                     thing = buildFood(item)
+                    break;
+                case MoneyList.hasOwnProperty(item):
+                    thing = buildMoney(item)
                     break;
             }
             newCreature.addInventory(thing.id)

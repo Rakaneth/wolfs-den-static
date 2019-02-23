@@ -54,7 +54,7 @@ let CreatureList = {
     keldun: {
         name: 'Keldunian',
         desc: 'Human of Keldun',
-        startItems: humanStartItems,
+        startItems: humanStartItems.concat('poorDrop'),
         frequency: 8,
         tags: humanTags,
         mixins: humanoidMixins,
@@ -88,7 +88,7 @@ let CreatureList = {
         desc: 'Dwarf of Mithril Gate',
         stam: 15,
         spd: 5,
-        startItems: edStartItems,
+        startItems: edStartItems.concat('medDrop'),
         frequency: 6,
         tags: [
             'humanoid',
@@ -176,6 +176,7 @@ let CreatureList = {
         tags: undeadTags,
         enemies: ['humanoid', 'animal'],
         mixins: humanoidMixins,
+        startItems: ['richDrop', 'richDrop', 'richDrop', 'medDrop'],
         startEquip: [
             {base: 'fellhammer'}
         ]
