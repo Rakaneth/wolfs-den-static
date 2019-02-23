@@ -185,6 +185,21 @@ let EquipList = {
         damageType: DamageTypes.MAGIC,
         tags: baseWeaponTags.concat('staff', 'magic'),
         mixins: baseMixins
+    },
+    fellhammer: {
+        name: 'The Fell Hammer',
+        desc: 'A massive warhammer covered in bloody spikes',
+        glyph: '\u0188',
+        color: Swatch.purple,
+        slot: EquipSlots.WEAPON,
+        equipType: EquipTypes.HAMMER,
+        damageType: DamageTypes.MAGIC,
+        atp: 20,
+        res: 10,
+        pwr: 20,
+        dmg: 12,
+        tags: baseWeaponTags.concat('hammer', 'magic', 'dark'),
+        mixins: baseMixins
     }
 }
 

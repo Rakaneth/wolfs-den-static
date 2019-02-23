@@ -46,6 +46,10 @@ let CreatureList = {
         frequency: 10,
         tags: humanTags,
         mixins: humanoidMixins,
+        randomEquip: [
+            ['axe'],
+            ['armor', 'leather']
+        ]
     },
     keldun: {
         name: 'Keldunian',
@@ -74,6 +78,9 @@ let CreatureList = {
             'humanoid',
             'elf'
         ],
+        randomEquip: [
+            ['staff']
+        ],
         mixins: humanoidMixins
     },
     dwarf: {
@@ -89,7 +96,11 @@ let CreatureList = {
         ],
         mixins: humanoidMixins,
         edrMult: 2.3,
-        vitMult: 1.3
+        vitMult: 1.3,
+        randomEquip: [
+            ['axe', 'metal'],
+            ['armor', 'metal'],
+        ]
     },
     wolfborn: {
         name: 'Wolf-born',
@@ -165,7 +176,9 @@ let CreatureList = {
         tags: undeadTags,
         enemies: ['humanoid', 'animal'],
         mixins: humanoidMixins,
-        //TODO: add fellhammer
+        startEquip: [
+            {base: 'fellhammer'}
+        ]
     }
 }
 
