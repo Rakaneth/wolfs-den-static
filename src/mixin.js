@@ -43,6 +43,7 @@ export let Drawable = new Mixin('drawable', 'drawable', {
 export let Player = new Mixin('player', 'player')
 export let Blocker = new Mixin('blocker', 'blocker')
 export let Carryable = new Mixin('carryable', 'carryable')
+export let DoorOpener = new Mixin('door-opener', 'door-opener')
 export let Mover = new Mixin('mover', 'mover', {
     move(pt) {
         if (this.has('position')) {
@@ -296,10 +297,10 @@ export let Vitals = new Mixin('vitals', 'vita;s', {
         this.vitMult = opts.vitMult || 1
     },
     get maxEdr() {
-        return this.getStat('stam') * this.edrMult
+        return Math.floor(this.getStat('stam') * this.edrMult)
     },
     get maxVit() {
-        return this.getStat('stam') * this.vitMult
+        return Math.floor(this.getStat('stam') * this.vitMult)
     },
     heal() {
         this.vit = this.maxVit

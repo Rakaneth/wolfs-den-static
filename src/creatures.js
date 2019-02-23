@@ -1,5 +1,5 @@
 import Swatch from './swatch'
-import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats, Vitals, Vision, Inventory, Faction } from './mixin';
+import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats, Vitals, Vision, Inventory, Faction, DoorOpener } from './mixin';
 
 const humanStartItems = [
     'ration',
@@ -35,7 +35,7 @@ const standardMixins = [
     Faction
 ]
 
-const humanoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory)
+const humanoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory, DoorOpener)
 const animalMixins = standardMixins.concat(DerivedStats)
 
 let CreatureList = {
@@ -87,7 +87,9 @@ let CreatureList = {
             'humanoid',
             'dwarf'
         ],
-        mixins: humanoidMixins
+        mixins: humanoidMixins,
+        edrMult: 2.3,
+        vitMult: 1.3
     },
     wolfborn: {
         name: 'Wolf-born',
@@ -103,7 +105,13 @@ let CreatureList = {
             'wolf',
             'shapechanger'
         ],
-        mixins: humanoidMixins
+        randomEquip: [
+            ['leather', 'armor'],
+            ['axe', 'weapon']
+        ],
+        mixins: humanoidMixins,
+        edrMult: 2.5,
+        vitMult: 1.5,
     },
     wolf: {
         name: 'wolf',

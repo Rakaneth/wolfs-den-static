@@ -20,11 +20,18 @@ GameEventManager.on('message', (msg) => {
 GameEventManager.on('try-move', (entity, dx, dy) => {
     let dest = entity.pos.translate(dx, dy)
     let thing = GameManager.getOccupyingEntity(dest)
+    let moved = false
     if (thing) {
         GameEventManager.dispatch('interact', entity, thing)
     } else if (entity.gameMap.isWalkable(dest)) {
         entity.move(dest)
-        entity.gameMap.dirty = true
+        moved = true
+    } else if (entity.gameMap.isClosedDoor(dest) && entity.has('door-opener')) {
+        entity.gameMap.setTile(dest, 'door-open')
+        moved = true
+    }
+    entity.gameMap.dirty = moved
+    if (moved) {
         entity.whenIsPlayer(() => GameManager.unpause())
     }
 })
