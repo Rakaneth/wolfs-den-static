@@ -117,7 +117,7 @@ let EquipList = {
         dmg: 3,
         damageType: DamageTypes.MAGIC,
         equipType: EquipTypes.STAFF,
-        tags: baseWeaponTags.concat('bone', 'wood', 'staff'),
+        tags: baseWeaponTags.concat('bone', 'wood', 'staff', 'magic'),
         mixins: baseMixins,
         frequency: 3
     },
@@ -158,6 +158,33 @@ let EquipList = {
         tags: baseArmorTags.concat('metal', 'leather', 'bone', 'armor'),
         mixins: baseMixins,
         frequency: 4
+    },
+    'sun-blade': {
+        name: 'Sun Blade',
+        desc: 'A golden blade shining like the sun.',
+        slot: EquipSlots.WEAPON,
+        glyph: '|',
+        atp: 10,
+        wil: 10,
+        pwr: 10,
+        dmg: 10,
+        equipType: EquipTypes.SWORD,
+        damageType: DamageTypes.MAGIC,
+        tags: baseWeaponTags.concat('magic', 'sun'),
+        mixins: baseMixins,
+    },
+    'wizards-staff': {
+        name: '<material> wizard\'s staff',
+        desc: 'A typical wizard\'s staff made from <material>',
+        slot: EquipSlots.WEAPON,
+        glyph: '\u00F4',
+        wil: 10,
+        pwr: 10,
+        res: 10,
+        equipType: EquipTypes.STAFF,
+        damageType: DamageTypes.MAGIC,
+        tags: baseWeaponTags.concat('staff', 'magic'),
+        mixins: baseMixins
     }
 }
 
