@@ -26,13 +26,14 @@ function createCB(gMap) {
 }
 
 function buildCaves(opts = { width: 30, height: 30 }) {
-    let gen = new Map.Cellular(opts.width || 30, opts.height || 30, { connected: true })
+    let gen = new Map.Cellular(opts.width || 30, opts.height || 30)
     let newMap = new GameMap(opts)
     gen.randomize(0.5)
     let cb = createCB(newMap)
     for (let i = 0; i < 6; i++) {
         gen.create(cb)
     }
+    gen.connect(cb)
     let numItems = GameManager.RNG.getUniformInt(opts.minItems || 0, opts.maxItems || 0)
     for (let i = 0; i < numItems; i++) {
         let toAdd = randomItem(opts.itemTags, opts.id)

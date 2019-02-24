@@ -32,6 +32,15 @@ GameEventManager.on('handle-key', (keyCode, shiftDown) => {
             case KEYS.VK_T:
                 console.log(testDice())
                 break;
+            case KEYS.VK_PERIOD:
+                if (shiftDown) {
+                    let conn = GameManager.curMap.getConnection(player.pos)
+                    if (conn) {
+                        GameEventManager.dispatch('change-level', conn)
+                    } else {
+                        GameEventManager.dispatch('message', 'No stairs here.')
+                    }
+                }
             default:
             //TODO: add other keybinds
             //do nothing

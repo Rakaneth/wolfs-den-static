@@ -69,8 +69,8 @@ GameEventManager.on('swap', (mover, flipped) => {
     let mPos = mover.pos
     mover.pos = flipped.pos
     flipped.pos = mPos
-    mover.whenIsPlayer(() => GameManager.unpause())
     mover.gameMap.dirty = true
+    mover.whenIsPlayer(() => GameManager.unpause())  
 })
 
 GameEventManager.on('basic-attack', (attacker, defender) => {
@@ -86,4 +86,13 @@ GameEventManager.on('death', (slain, killer) => {
         })
         GameManager.removeEntity(slain)
     }
+})
+
+GameEventManager.on('change-level', (conn) => {
+    let player = GameManager.player
+    player.pos = conn.toPt
+    GameManager.setCurMap(conn.mapID)
+    player.mapID = conn.mapID
+    player.gameMap.dirty = true
+    GameManager.unpause()
 })
