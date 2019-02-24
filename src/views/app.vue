@@ -3,6 +3,7 @@
     <map-display :gameState="gameState" ref="mapDisplay"></map-display>
     <player-stats :gameState="gameState"></player-stats>
     <messages :messages="gameState.messages"></messages>
+    <things-seen-info></things-seen-info>
   </div>
 </template>
 
@@ -11,12 +12,14 @@ import Messages from "./messages.vue";
 import GameManager from "../gamestate";
 import PlayerStats from "./stats.vue";
 import MapDisplay from "./mapdisplay.vue";
+import ThingsSeenInfo from './info.vue';
 import GameEventManager from "../dispatcher.js";
 export default {
   components: {
     Messages,
     PlayerStats,
-    MapDisplay
+    MapDisplay,
+    ThingsSeenInfo
   },
   data() {
     return {

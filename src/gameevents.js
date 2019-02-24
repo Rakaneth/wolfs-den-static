@@ -1,6 +1,7 @@
 import GameEventManager from './dispatcher'
 import GameManager from './gamestate'
-import { listRemove } from './utils';
+import { listRemove, decorate, deepClone } from './utils';
+import swatch from './swatch';
 
 GameEventManager.on('pickup', (entity, item) => {
     item.whenHas('money-drop', () => {
@@ -66,7 +67,7 @@ GameEventManager.on('interact', (giver, receiver) => {
 })
 
 GameEventManager.on('swap', (mover, flipped) => {
-    let mPos = mover.pos
+    let mPos = deepClone(mover.pos)
     mover.pos = flipped.pos
     flipped.pos = mPos
     mover.gameMap.dirty = true
@@ -75,16 +76,27 @@ GameEventManager.on('swap', (mover, flipped) => {
 
 GameEventManager.on('basic-attack', (attacker, defender) => {
     GameEventManager.dispatch('message', `${attacker.displayString} attacks ${defender.displayString}!`)
+    GameEventManager.dispatch('death', defender, attacker)
 })
 
 GameEventManager.on('death', (slain, killer) => {
     if (!slain.alive) {
-        slain.whenHas('inventory', () => {
-            slain.inventory.forEach(itemID => {
-                slain.drop(itemID)
+        if (slain.has('player')) {
+            //GAME OVER MAN
+        } else {
+            slain.whenHas('inventory', () => {
+                slain.inventory.forEach(itemID => {
+                    slain.drop(itemID)
+                })
             })
-        })
-        GameManager.removeEntity(slain)
+            let visiName = (thing) => GameManager.inPlayerView(thing) ? thing.displayString : decorate("Nothing", swatch.cyan)
+            if (GameManager.inPlayerView(slain) || GameManager.inPlayerView(killer)) {
+                let visiSlain = visiName(slain)
+                let visiKiller = visiName(killer)
+                GameEventManager.dispatch('message', `${visiKiller} has slain ${visiSlain}!`)
+            }
+            GameManager.removeEntity(slain)
+        }
     }
 })
 

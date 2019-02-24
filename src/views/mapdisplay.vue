@@ -8,6 +8,8 @@ import Tiles from "../tile.js";
 import { between } from "../utils.js";
 import Point from "../point.js";
 import Swatch from "../swatch.js";
+import GameManager from "../gamestate.js";
+import GameEventManager from "../dispatcher.js";
 export default {
   name: "map-display",
   props: {
@@ -33,6 +35,14 @@ export default {
     };
     this.display = new Display(opts);
     canvas.appendChild(this.display.getContainer());
+    canvas.addEventListener("mousemove", e => {
+      let [mx, my] = this.display.eventToPosition(e);
+      this.handleMouseover(mx, my);
+    });
+    canvas.addEventListener("click", e => {
+      let [mx, my] = this.display.eventToPosition(e);
+      this.handleMouseClick(mx, my, e.button);
+    });
     this.drawMap();
   },
   methods: {
@@ -83,6 +93,13 @@ export default {
         });
         curMap.dirty = false;
       }
+    },
+    handleMouseover(mx, my) {
+      let curMap = GameManager.curMap;
+      let c = curMap.cam(GameManager.player.pos, this.mapW, this.mapH);
+      let wx = c.x + mx;
+      let wy = c.y + my;
+      this.$emit("things-seen", GameManager.thingsAt(new Point(wx, wy)));
     }
   }
 };
