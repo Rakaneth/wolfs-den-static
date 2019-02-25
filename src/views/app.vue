@@ -3,7 +3,7 @@
     <map-display :gameState="gameState" ref="mapDisplay"></map-display>
     <player-stats :gameState="gameState"></player-stats>
     <messages :messages="gameState.messages"></messages>
-    <things-seen-info></things-seen-info>
+    <things-seen-info :seen="seen" @things-seen="updateSeen"></things-seen-info>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import Messages from "./messages.vue";
 import GameManager from "../gamestate";
 import PlayerStats from "./stats.vue";
 import MapDisplay from "./mapdisplay.vue";
-import ThingsSeenInfo from './info.vue';
+import ThingsSeenInfo from "./info.vue";
 import GameEventManager from "../dispatcher.js";
 export default {
   components: {
@@ -23,7 +23,8 @@ export default {
   },
   data() {
     return {
-      gameState: GameManager
+      gameState: GameManager,
+      seen: []
     };
   },
   created() {
@@ -31,6 +32,11 @@ export default {
       GameEventManager.dispatch("handle-key", e.keyCode, e.shiftKey);
       this.$refs.mapDisplay.drawMap();
     });
+  },
+  methods: {
+    updateSeen(stuff) {
+      this.seen = stuff;
+    }
   }
 };
 </script>

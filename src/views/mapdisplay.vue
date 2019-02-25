@@ -99,7 +99,10 @@ export default {
       let c = curMap.cam(GameManager.player.pos, this.mapW, this.mapH);
       let wx = c.x + mx;
       let wy = c.y + my;
-      this.$emit("things-seen", GameManager.thingsAt(new Point(wx, wy)));
+      let stuff = GameManager.thingsAt(new Point(wx, wy));
+      if (stuff.length) {
+        this.$emit("things-seen", stuff);
+      }
     }
   }
 };
