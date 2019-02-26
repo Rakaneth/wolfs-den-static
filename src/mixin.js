@@ -241,6 +241,9 @@ export let Inventory = new Mixin('inventory', 'inventory', {
         this.removeInventory(thing.id)
         thing.mapID = this.mapID
         thing.pos = this.pos
+        if (thing.equipped) {
+            thing.equipped = false
+        }
         GameEventManager.dispatch('drop', this, thing)
     },
     get bagsFull() {

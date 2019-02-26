@@ -24,6 +24,7 @@ GameEventManager.on('try-move', (entity, dx, dy) => {
     let moved = false
     if (thing) {
         GameEventManager.dispatch('interact', entity, thing)
+        moved = true
     } else if (entity.gameMap.isWalkable(dest)) {
         entity.move(dest)
         moved = true
@@ -67,8 +68,8 @@ GameEventManager.on('interact', (giver, receiver) => {
 })
 
 GameEventManager.on('swap', (mover, flipped) => {
-    let mPos = mover.pos
-    let fPos = flipped.pos
+    let mPos = mover.pos.clone()
+    let fPos = flipped.pos.clone()
     mover.pos = fPos
     flipped.pos = mPos
     mover.gameMap.dirty = true
@@ -77,6 +78,7 @@ GameEventManager.on('swap', (mover, flipped) => {
 
 GameEventManager.on('basic-attack', (attacker, defender) => {
     GameEventManager.dispatch('message', `${attacker.displayString} attacks ${defender.displayString}!`)
+    defender.alive = false
     GameEventManager.dispatch('death', defender, attacker)
 })
 
@@ -86,8 +88,8 @@ GameEventManager.on('death', (slain, killer) => {
             //GAME OVER MAN
         } else {
             slain.whenHas('inventory', () => {
-                slain.inventory.forEach(itemID => {
-                    slain.drop(itemID)
+                slain.inventoryEntities.forEach(item => {
+                    slain.drop(item)
                 })
             })
             let visiName = (thing) => GameManager.inPlayerView(thing) ? thing.displayString : decorate("Nothing", swatch.cyan)

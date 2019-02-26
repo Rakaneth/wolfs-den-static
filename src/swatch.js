@@ -24,4 +24,7 @@ export default {
     exploredWall: 'darkblue',
     silver: 'rgb(212,212,212)',
     gold: 'rgb(229,191,0)',
+    stone: 'rgb(100,100,100)',
+    darkStone: 'rgb(50,50,50)',
+    lightStone: 'rgb(150,150,150)'
 }
