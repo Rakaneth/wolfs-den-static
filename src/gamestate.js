@@ -60,7 +60,10 @@ class GameState {
     }
 
     thingsAt(pt) {
-        return Object.values(this.curEntities).filter(en => en.pos.same(pt) && this.isHere(en))
+        return Object.values(this.curEntities)
+            .filter(en => {
+                return en.pos.same(pt) && this.isHere(en)
+            })
     }
 
     isEntityAt(entity, pt) {

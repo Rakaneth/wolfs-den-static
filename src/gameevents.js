@@ -67,11 +67,12 @@ GameEventManager.on('interact', (giver, receiver) => {
 })
 
 GameEventManager.on('swap', (mover, flipped) => {
-    let mPos = deepClone(mover.pos)
-    mover.pos = flipped.pos
+    let mPos = mover.pos
+    let fPos = flipped.pos
+    mover.pos = fPos
     flipped.pos = mPos
     mover.gameMap.dirty = true
-    mover.whenIsPlayer(() => GameManager.unpause())  
+    mover.whenIsPlayer(() => GameManager.unpause())
 })
 
 GameEventManager.on('basic-attack', (attacker, defender) => {

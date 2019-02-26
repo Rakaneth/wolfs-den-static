@@ -3,7 +3,7 @@
     <map-display :gameState="gameState" ref="mapDisplay"></map-display>
     <player-stats :gameState="gameState"></player-stats>
     <messages :messages="gameState.messages"></messages>
-    <things-seen-info :seen="seen" @things-seen="updateSeen"></things-seen-info>
+    <things-seen-info :seen="seen"></things-seen-info>
   </div>
 </template>
 
@@ -32,6 +32,9 @@ export default {
       GameEventManager.dispatch("handle-key", e.keyCode, e.shiftKey);
       this.$refs.mapDisplay.drawMap();
     });
+  },
+  mounted() {
+    this.$root.$on("things-seen", this.updateSeen);
   },
   methods: {
     updateSeen(stuff) {

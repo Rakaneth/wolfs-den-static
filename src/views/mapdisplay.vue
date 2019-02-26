@@ -94,15 +94,14 @@ export default {
         curMap.dirty = false;
       }
     },
-    handleMouseover(mx, my) {
+    handleMouseover(mx, my) {},
+    handleMouseClick(mx, my, btn) {
       let curMap = GameManager.curMap;
       let c = curMap.cam(GameManager.player.pos, this.mapW, this.mapH);
       let wx = c.x + mx;
       let wy = c.y + my;
       let stuff = GameManager.thingsAt(new Point(wx, wy));
-      if (stuff.length) {
-        this.$emit("things-seen", stuff);
-      }
+      this.$root.$emit("things-seen", stuff);
     }
   }
 };
