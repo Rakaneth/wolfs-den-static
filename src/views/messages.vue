@@ -17,10 +17,10 @@ export default {
 
 <style scoped lang='css'>
 #messages {
-  height: 20vw;
+  height: 13vw;
   font-size: 16px;
   border: 1px solid red;
-  width: 28vw;
+  width: 50vw;
   overflow-y: scroll;
 }
 </style>
