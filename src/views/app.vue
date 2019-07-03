@@ -3,7 +3,7 @@
     <map-display :gameState="gameState" ref="mapDisplay"></map-display>
     <player-stats :gameState="gameState"></player-stats>
     <messages :messages="gameState.messages"></messages>
-    <things-seen-info :seen="seen"></things-seen-info>
+    <things-seen-info :seen="gameState.thingsInView"></things-seen-info>
   </div>
 </template>
 
@@ -36,11 +36,6 @@ export default {
   mounted() {
     this.$root.$on("things-seen", this.updateSeen);
   },
-  methods: {
-    updateSeen(stuff) {
-      this.seen = stuff;
-    }
-  }
 };
 </script>
 

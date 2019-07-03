@@ -118,6 +118,10 @@ class GameState {
         return this.player.canSee(entity)
     }
 
+    get thingsInView() {
+        return this.curEntities.filter(en => this.inPlayerView(en) && !en.has('player'))
+    }
+
 
 }
 
