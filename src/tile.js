@@ -14,8 +14,8 @@ let Tiles = {
     'null-tile': new Tile('\u0000', null, null, false, false),
     'floor': new Tile(' '), //Floor
     'wall': new Tile(' ', null, null, false, false), //Wall
-    'door-closed': new Tile('+', Swatch.white, Swatch.darkSepia, false, false), //closed door
-    'door-open': new Tile('/', Swatch.white, Swatch.darkSepia), //open door
+    'door-closed': new Tile('+', Swatch.white, Swatch.darkerSepia, false, false), //closed door
+    'door-open': new Tile('/', Swatch.white, Swatch.darkerSepia), //open door
     'stairs-down': new Tile('>', Swatch.yellow),
     'stairs-up': new Tile('<', Swatch.yellow),
     'door-out': new Tile('\u03A0', Swatch.sepia)

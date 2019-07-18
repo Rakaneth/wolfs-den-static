@@ -143,7 +143,7 @@ let EquipList = {
         material: true,
         dfp: 7,
         equipType: EquipTypes.ARMOR,
-        tags: baseArmorTags.concat('metal', 'armor'),
+        tags: baseArmorTags.concat('metal'),
         mixins: baseMixins,
         frequency: 2
     },
@@ -155,7 +155,7 @@ let EquipList = {
         material: true,
         dfp: 5,
         equipType: EquipTypes.ARMOR,
-        tags: baseArmorTags.concat('metal', 'leather', 'bone', 'armor'),
+        tags: baseArmorTags.concat('metal', 'leather', 'bone'),
         mixins: baseMixins,
         frequency: 4
     },

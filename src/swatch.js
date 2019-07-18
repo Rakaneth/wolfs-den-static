@@ -1,9 +1,9 @@
 import { rgb2hsl } from "rot-js/lib/color";
 
 export default {
-    sepia: 'rgb(127,101,63)',
-    darkSepia: 'rgb(94,75,47)',
-    darkerSepia: 'rgb(63,50,31)',
+    sepia: 'rgb(191,171,143)',
+    darkSepia: 'rgb(158,134,100)',
+    darkerSepia: 'rgb(127,101,63)',
     cyan: 'rgb(0,255,255)',
     blackMark: 'rgb(63,63,63)',
     redMark: 'rgb(191,74,0)',
@@ -19,12 +19,12 @@ export default {
     white: "white",
     flesh: 'rgb(255,159,127)',
     crimson: 'crimson',
-    purple: 'purple',
+    purple: 'rgb(220,115,255)',
     exploredFloor: 'blue',
     exploredWall: 'darkblue',
     silver: 'rgb(212,212,212)',
     gold: 'rgb(229,191,0)',
     stone: 'rgb(100,100,100)',
     darkStone: 'rgb(50,50,50)',
-    lightStone: 'rgb(150,150,150)'
+    lightStone: 'rgb(100,100,100)'
 }

@@ -105,6 +105,7 @@ let CreatureList = {
     wolfborn: {
         name: 'Wolf-born',
         desc: 'Wolf-born of the Fang Wood',
+        color: Swatch.sepia,
         str: 15,
         stam: 15,
         smt: 5,
@@ -178,7 +179,7 @@ let CreatureList = {
         mixins: humanoidMixins,
         startItems: ['richDrop', 'richDrop', 'richDrop', 'medDrop'],
         startEquip: [
-            {base: 'fellhammer'}
+            { base: 'fellhammer' }
         ]
     }
 }
