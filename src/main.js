@@ -11,4 +11,3 @@ player.pos = GameManager.curMap.randomFloor()
 GameManager.start()
 let MainComponent = Vue.extend(App)
 new MainComponent().$mount('#gui')
-

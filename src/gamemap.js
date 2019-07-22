@@ -115,12 +115,17 @@ export class GameMap {
     }
 
     randomFloor(pt = null, radius = 0) {
-        let cands
-        if (pt && radius) {
-            cands = this.floors.filter(f => pt.distance(f) <= radius)
-        } else {
-            cands = this.floors
+        let cands = []
+        let isRadius = !!(pt && radius)
+
+        for (let i = 0; i < this.floors.length; i++) {
+            let f = this.floors[i]
+            let select = !isRadius || pt.distance(f) <= radius
+            if (select && !GameManager.isBlocked(f)) {
+                cands.push(f)
+            }
         }
+
         return GameManager.RNG.getItem(cands)
     }
 

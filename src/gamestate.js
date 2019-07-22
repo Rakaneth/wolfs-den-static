@@ -11,6 +11,7 @@ class GameState {
         this.curMapID = "none"
         this.messages = []
         this.RNG = RNG
+        this.gameLoadPct = 0
         if (rngSeed) {
             this.RNG.setSeed(rngSeed)
         }
