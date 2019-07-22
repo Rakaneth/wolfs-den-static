@@ -234,15 +234,15 @@ export let Inventory = new Mixin('inventory', 'inventory', {
     },
     drop(itemOrEID) {
         let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
-        this.whenIsPlayer(() => {
-            let msg = `Dropped ${thing.displayString}`
-            GameEventManager.dispatch('message', msg)
-        })
         this.removeInventory(thing.id)
         thing.mapID = this.mapID
         thing.pos = this.pos
         if (thing.equipped) {
             thing.equipped = false
+        }
+        if (GameManager.inPlayerView(thing)) {
+            let msg = `${this.displayString} drops ${thing.displayString}`
+            GameEventManager.dispatch('message', msg)
         }
         GameEventManager.dispatch('drop', this, thing)
     },

@@ -10,6 +10,7 @@
           @click="toggleEquip(thing.id)"
         >{{ thing.equipped ? 'Unequip' : 'Equip' }}</button>
         <button v-if="thing.has('consumable')" @click="use(thing.id)">Use</button>
+        <button @click="drop(thing.id)">Drop</button>
       </li>
     </ul>
   </div>
@@ -34,6 +35,9 @@ export default {
     use(eID) {
       let thing = this.gameState.entityByID(eID);
       thing.consume(this.player);
+    },
+    drop(eID) {
+        this.player.drop(eID)
     }
   },
   computed: {
