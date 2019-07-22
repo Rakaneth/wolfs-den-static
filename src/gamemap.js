@@ -1,5 +1,5 @@
 import Tiles from './tile'
-import { between, listRemove, clamp } from './utils'
+import { between, listRemove, clamp, debugLog } from './utils'
 import Swatch from './swatch'
 import GameManager from './gamestate'
 import Point from './point';
@@ -99,6 +99,7 @@ export class GameMap {
         }
         let { tile, opp } = connsChart[connectOpts.direction]
         this.setTile(connectOpts.fromPt, tile)
+        debugLog('MAP', `Connecting ${this.id} (${connectOpts.fromPt}) to ${connectOpts.mapID} (${connectOpts.toPt})`)
         if (connectOpts.twoWay) {
             let otherMap = GameManager.mapByID(connectOpts.mapID)
             otherMap.connect({

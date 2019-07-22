@@ -332,10 +332,14 @@ export function buildAllMaps() {
                 let connOpts
                 if (opts.zone === toOpts.zone) {
                     let matchingFloors = curMap.floors.filter(fl => toMap.isWalkable(fl))
-                    let pt = GameManager.RNG.getItem(matchingFloors)
+                    let pt = null
+                    if (matchingFloors.length > 0) {
+                        pt = GameManager.RNG.getItem(matchingFloors)
+                    }
+
                     connOpts = {
-                        fromPt: pt,
-                        toPt: pt,
+                        fromPt: pt || curMap.randomFloor(),
+                        toPt: pt || toMap.randomFloor(),
                         twoWay: conn.twoWay,
                         direction: conn.direction,
                         mapID: conn.mapID

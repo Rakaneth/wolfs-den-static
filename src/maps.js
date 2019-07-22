@@ -4,8 +4,8 @@ import Swatch from './swatch'
 let MapList = {
     'mine-upper': {
         name: 'Mines (Upper)',
-        width: 85,
-        height: 85,
+        width: 50,
+        height: 30,
         mapType: MapTypes.DIGGER,
         creatureTags: ['wolf'],
         minCreatures: 20,
@@ -25,8 +25,8 @@ let MapList = {
     },
     'mine-lower': {
         name: 'Mines (Lower)',
-        width: 85,
-        height: 85,
+        width: 50,
+        height: 30,
         mapType: MapTypes.DIGGER,
         creatureTags: ['wolf'],
         minCreatures: 30,
