@@ -131,6 +131,7 @@ let CreatureList = {
         unarmed: 'fangs',
         glyph: 'W',
         color: Swatch.sepia,
+        onDeath: 'wolf-death',
         str: 15,
         spd: 15,
         dmg: 2,

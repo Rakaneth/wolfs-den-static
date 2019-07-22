@@ -296,6 +296,8 @@ export function buildPlayer(name, buildID, mapID) {
                 case FoodList.hasOwnProperty(item):
                     thing = buildFood(item)
                     break;
+                default:
+                    return
             }
             baseCreature.addInventory(thing.id)
             GameManager.addEntity(thing)

@@ -48,8 +48,8 @@ let MapList = {
     },
     'caves-upper': {
         name: 'Caves (Upper)',
-        width: 100,
-        height: 100,
+        width: 50,
+        height: 30,
         mapType: MapTypes.CAVES,
         creatureTags: ['wolf', 'undead'],
         minCreatures: 20,
@@ -72,8 +72,8 @@ let MapList = {
     },
     'caves-lower': {
         name: 'Caves (Lower)',
-        width: 100,
-        height: 100,
+        width: 50,
+        height: 30,
         mapType: MapTypes.CAVES,
         creatureTags: ['wolf', 'undead'],
         minCreatures: 15,
@@ -95,8 +95,8 @@ let MapList = {
     },
     crypt: {
         name: 'Crypt',
-        width: 150,
-        height: 150,
+        width: 100,
+        height: 100,
         mapType: MapTypes.DIGGER,
         creatureTags: ['undead'],
         minCreatures: 10,

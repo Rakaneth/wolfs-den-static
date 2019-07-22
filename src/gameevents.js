@@ -82,10 +82,18 @@ GameEventManager.on('basic-attack', (attacker, defender) => {
     GameEventManager.dispatch('death', defender, attacker)
 })
 
+GameEventManager.on('wolf-death', (slain, killer) => {
+    GameEventManager.dispatch('message', `The  ${slain.displayString} yelps and runs away.`)
+    slain.alive = true
+})
+
 GameEventManager.on('death', (slain, killer) => {
+    if (slain.onDeath) {
+        GameEventManager.dispatch(slain.onDeath, slain, killer)
+    }
     if (!slain.alive) {
         if (slain.has('player')) {
-            //GAME OVER MAN
+            //TODO: GAME OVER MAN
         } else {
             slain.whenHas('inventory', () => {
                 slain.inventoryEntities.forEach(item => {

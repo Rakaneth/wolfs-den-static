@@ -303,6 +303,7 @@ export let Vitals = new Mixin('vitals', 'vita;s', {
         this.edr = 0
         this.edrMult = opts.edrMult || 2
         this.vitMult = opts.vitMult || 1
+        this.onDeath = opts.onDeath
     },
     get maxEdr() {
         return Math.floor(this.getStat('stam') * this.edrMult)
