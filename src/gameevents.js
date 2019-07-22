@@ -83,7 +83,7 @@ GameEventManager.on('basic-attack', (attacker, defender) => {
 })
 
 GameEventManager.on('wolf-death', (slain, killer) => {
-    GameEventManager.dispatch('message', `The  ${slain.displayString} yelps and runs away.`)
+    GameEventManager.dispatch('message', `The  ${slain.displayString} yelps and runs away from ${killer.displayString}.`)
     slain.alive = true
 })
 

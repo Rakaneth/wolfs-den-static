@@ -23,6 +23,10 @@ export default {
   width: 50vw;
   overflow-y: scroll;
 }
+
+#messages li:first-child {
+  font-style: italic;
+}
 </style>
 
 
