@@ -32,10 +32,7 @@ export default {
       GameEventManager.dispatch("handle-key", e.keyCode, e.shiftKey);
       this.$refs.mapDisplay.drawMap();
     });
-  },
-  mounted() {
-    this.$root.$on("things-seen", this.updateSeen);
-  },
+  }
 };
 </script>
 

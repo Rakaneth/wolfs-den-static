@@ -38,7 +38,11 @@ export let Drawable = new Mixin('drawable', 'drawable', {
     },
     get displayString() {
         return decorate(this.name, this.color)
+    },
+    get displayStringWithPos() {
+        return decorate(`${this.name} (${this.pos})`, this.color)
     }
+
 })
 export let Player = new Mixin('player', 'player')
 export let Blocker = new Mixin('blocker', 'blocker')

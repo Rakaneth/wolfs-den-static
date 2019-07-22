@@ -1,7 +1,7 @@
 <template>
   <div id="seen">
     <ul>
-      <li v-for="thing in seen" :key="thing.id" v-html="thing.displayString"></li>
+      <li v-for="thing in seen" :key="thing.id" v-html="thing.displayStringWithPos"></li>
     </ul>
   </div>
 </template>
