@@ -75,7 +75,7 @@ export class GameMap {
     }
 
     isExplored(pt) {
-        return this._explored[pt.y][pt.x]
+        return !this.isOOB(pt) && this._explored[pt.y][pt.x]
     }
 
     isClosedDoor(pt) {
@@ -132,7 +132,7 @@ export class GameMap {
 
     cam(pt, sw, sh) {
         let calc = (p, md, s) => {
-            return clamp(p - s / 2, 0, Math.max(0, md - s))
+            return clamp(p - Math.floor(s / 2), 0, Math.max(0, md - s))
         }
         let left = calc(pt.x, this.width, sw)
         let top = calc(pt.y, this.height, sh)
