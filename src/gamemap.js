@@ -58,7 +58,12 @@ export class GameMap {
         if (t.walk) {
             this.floors.push(pt)
         } else {
-            this.floors = listRemove(this.floors, pt)
+            for (let i = 0; i < this.floors.length; i++) {
+                let curFloor = this.floors[i]
+                if (curFloor.x == pt.x && curFloor.y == pt.y) {
+                    this.floors.splice(i, 1)
+                }
+            }
         }
     }
 
