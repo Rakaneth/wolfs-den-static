@@ -52,4 +52,8 @@ export default class Entity {
             this.takeAction()
         })
     }
+
+    toString() {
+        return `${this.glyph} ${this.name} ${this.id.substring(0, 7)}`
+    }
 }

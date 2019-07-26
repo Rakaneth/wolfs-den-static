@@ -395,6 +395,15 @@ export let PlayerActor = new Mixin('player-actor', 'actor', {
     }
 })
 
+export let WaitActor = new Mixin('wait-actor', 'actor', {
+    getSpeed() {
+        return this.getStat('spd')
+    },
+    takeAction() {
+        //console.log(`${this.displayString} waits.`)
+    }
+})
+
 export let Faction = new Mixin('faction', 'faction', {
     init(opts) {
         this.enemies = opts.enemies ? new Set(opts.enemies) : new Set()

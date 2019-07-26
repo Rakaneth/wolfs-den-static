@@ -126,8 +126,8 @@ GameEventManager.on('eat-corpse-default', (eater, corpse) => {
 GameEventManager.on('change-level', (conn) => {
     let player = GameManager.player
     player.pos = conn.toPt
-    GameManager.setCurMap(conn.mapID)
     player.mapID = conn.mapID
+    GameManager.setCurMap(conn.mapID)
     player.gameMap.dirty = true
     GameManager.unpause()
 })

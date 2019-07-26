@@ -27,12 +27,14 @@ class GameState {
 
     setCurMap(value) {
         this.curMapID = value
-        this.curEntities.forEach(en => {
-            if (this.isHere(en) && en.has('actor')) {
-                this.schedule(en)
-            } else {
-                this.unschedule(en)
-            }
+        Object.values(this.entities).forEach(en => {
+            en.whenHas('actor', () => {
+                if (this.isHere(en)) {
+                    this.schedule(en)
+                } else {
+                    this.unschedule(en)
+                }
+            })
         })
     }
 
@@ -96,9 +98,13 @@ class GameState {
 
     schedule(entity) {
         this.scheduler.add(entity, true)
+        debugLog('SCHEDULER', `${entity} scheduled`)
     }
 
     unschedule(entity) {
+        if (entity.has('actor') && this.scheduler.getTimeOf(entity)) {
+            debugLog('SCHEDULER', `${entity} unscheduled`)
+        }
         this.scheduler.remove(entity)
     }
 
@@ -108,6 +114,10 @@ class GameState {
 
     get curEntities() {
         return this.entitiesOnMap(this.curMapID)
+    }
+
+    get curActors() {
+        return this.curEntities.filter(en => en.has('actor'))
     }
 
     get toDraw() {
