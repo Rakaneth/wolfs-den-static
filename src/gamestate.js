@@ -27,12 +27,11 @@ class GameState {
 
     setCurMap(value) {
         this.curMapID = value
+        this.scheduler.clear()
         Object.values(this.entities).forEach(en => {
             en.whenHas('actor', () => {
                 if (this.isHere(en)) {
                     this.schedule(en)
-                } else {
-                    this.unschedule(en)
                 }
             })
         })
