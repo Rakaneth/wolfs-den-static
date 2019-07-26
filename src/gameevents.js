@@ -2,6 +2,7 @@ import GameEventManager from './dispatcher'
 import GameManager from './gamestate'
 import { listRemove, decorate, deepClone } from './utils';
 import swatch from './swatch';
+import { buildCorpse } from './factory'
 
 GameEventManager.on('pickup', (entity, item) => {
     item.whenHas('money-drop', () => {
@@ -82,11 +83,6 @@ GameEventManager.on('basic-attack', (attacker, defender) => {
     GameEventManager.dispatch('death', defender, attacker)
 })
 
-GameEventManager.on('wolf-death', (slain, killer) => {
-    GameEventManager.dispatch('message', `The  ${slain.displayString} yelps and runs away from ${killer.displayString}.`)
-    slain.alive = true
-})
-
 GameEventManager.on('death', (slain, killer) => {
     if (slain.onDeath) {
         GameEventManager.dispatch(slain.onDeath, slain, killer)
@@ -106,8 +102,24 @@ GameEventManager.on('death', (slain, killer) => {
                 let visiKiller = visiName(killer)
                 GameEventManager.dispatch('message', `${visiKiller} has slain ${visiSlain}!`)
             }
+            slain.whenHas('corpse', () => {
+                buildCorpse(slain)
+            })
             GameManager.removeEntity(slain)
         }
+    }
+})
+
+GameEventManager.on('eat-corpse-default', (eater, corpse) => {
+    let canSeeEating = GameManager.inPlayerView(eater) || GameManager.inPlayerView(corpse)
+    if (corpse.canBeEaten) {
+        if (canSeeEating) {
+            GameEventManager.dispatch('message', `${eater.displayString} devours the ${corpse.displayString}.`)
+        }
+        if (eater.has('inventory') && eater.hasItem(corpse)) {
+            eater.removeInventory(corpse.id)
+        }
+        GameManager.removeEntity(corpse)
     }
 })
 

@@ -13,6 +13,7 @@ import { debugLog, deepClone } from './utils';
 import { Player, PlayerActor } from './mixin';
 import { EquipSlots } from './equipslots';
 import MoneyList from './money';
+import { Position, Drawable, Carryable, Corpse } from "./mixin"
 
 class MapBuilder {
     constructor(gen, opts, isRoomer = false) {
@@ -246,6 +247,20 @@ function buildCreature(buildID, mapID = null) {
     newCreature.heal()
     newCreature.restore()
     return newCreature
+}
+
+export function buildCorpse(deadCreature) {
+    let corpseOpts = {
+        name: `corpse of ${deadCreature.name}`,
+        desc: `Once a ${deadCreature}, now a stinking corpse.`,
+        mixins: [Position, Drawable, Carryable, Corpse],
+        onEat: deadCreature.onEat,
+        mapID: deadCreature.mapID,
+        pos: deadCreature.pos,
+        color: deadCreature.color,
+        glyph: '%'
+    }
+    GameManager.addEntity(new Entity(corpseOpts))
 }
 
 function randomEq(tagList, mapID, starting = false) {

@@ -1,5 +1,5 @@
 import Swatch from './swatch'
-import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats, Vitals, Vision, Inventory, Faction, DoorOpener } from './mixin';
+import { Blocker, Mover, Position, Drawable, PrimaryStats, EquipWearer, MoneyTaker, DerivedStats, Vitals, Vision, Inventory, Faction, DoorOpener, Corpse } from './mixin';
 
 const humanStartItems = [
     'ration',
@@ -35,8 +35,8 @@ const standardMixins = [
     Faction
 ]
 
-const humanoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory, DoorOpener)
-const animalMixins = standardMixins.concat(DerivedStats)
+const humanoidMixins = standardMixins.concat(EquipWearer, MoneyTaker, Inventory, DoorOpener, Corpse)
+const animalMixins = standardMixins.concat(DerivedStats, Corpse)
 
 let CreatureList = {
     native: {

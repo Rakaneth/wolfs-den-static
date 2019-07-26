@@ -48,7 +48,16 @@ export let Player = new Mixin('player', 'player')
 export let Blocker = new Mixin('blocker', 'blocker')
 export let Carryable = new Mixin('carryable', 'carryable')
 export let DoorOpener = new Mixin('door-opener', 'door-opener')
-export let CorpseLeaver = new Mixin('corpse-leaver', 'corpse-leaver')
+export let Corpse = new Mixin('corpse', 'consumable', {
+    init(opts) {
+        this.onEat = opts.onEat || 'eat-corpse-default'
+        this.canBeEaten = typeof (opts.canBeEaten) === 'undefined' || opts.canBeEaten
+    },
+
+    consume(user) {
+        GameEventManager.dispatch(this.onEat, user, this)
+    }
+})
 export let Mover = new Mixin('mover', 'mover', {
     move(pt) {
         if (this.has('position')) {
@@ -255,6 +264,15 @@ export let Inventory = new Mixin('inventory', 'inventory', {
     },
     get inventoryEntities() {
         return this.inventory.map(el => GameManager.entityByID(el))
+    },
+
+    hasItem(itemOrEID) {
+        let thing = typeof (itemOrEID) === 'string' ? GameManager.entityByID(itemOrEID) : itemOrEID
+        return this.inventory.includes(thing.id)
+    },
+
+    hasAnyOf(itemName) {
+        return this.inventoryEntities.some(el => el.name === itemName)
     }
 })
 
