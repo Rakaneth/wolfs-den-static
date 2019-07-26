@@ -21,7 +21,8 @@ let MapList = {
                 twoWay: true,
                 direction: ConnectionDirections.DOWN
             }
-        ]
+        ],
+        lit: false,
     },
     'mine-lower': {
         name: 'Mines (Lower)',
@@ -44,7 +45,8 @@ let MapList = {
                 twoWay: true,
                 direction: ConnectionDirections.DOWN
             }
-        ]
+        ],
+        lit: false,
     },
     'caves-upper': {
         name: 'Caves (Upper)',
