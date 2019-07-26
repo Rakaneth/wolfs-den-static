@@ -60,11 +60,10 @@ class GameState {
         return this.maps[mID]
     }
 
-    thingsAt(pt) {
-        return Object.values(this.curEntities)
-            .filter(en => {
-                return en.pos.same(pt) && this.isHere(en)
-            })
+    thingsAt(pt, mapID = this.curMapID) {
+        return this.entitiesOnMap(mapID).filter(en => {
+            return en.pos && en.pos.same(pt) && mapID === en.mapID
+        })
     }
 
     isEntityAt(entity, pt) {
@@ -75,12 +74,12 @@ class GameState {
         return entity.has('position') && entity.mapID === this.curMapID && !!entity.pos
     }
 
-    isBlocked(pt) {
-        return this.thingsAt(pt).some(el => el.has('blocker') && this.isHere(el))
+    isBlocked(pt, mapID = this.curMapID) {
+        return this.thingsAt(pt, mapID).some(el => el.has('blocker') && mapID === el.mapID)
     }
 
-    getOccupyingEntity(pt) {
-        return this.thingsAt(pt).find(en => en.has('blocker'))
+    getOccupyingEntity(pt, mapID = this.curMapID) {
+        return this.thingsAt(pt, mapID).find(en => en.has('blocker'))
     }
 
     pause() {
@@ -103,8 +102,12 @@ class GameState {
         this.scheduler.remove(entity)
     }
 
+    entitiesOnMap(mapID) {
+        return Object.values(this.entities).filter(en => mapID === en.mapID)
+    }
+
     get curEntities() {
-        return Object.values(this.entities).filter(en => this.isHere(en))
+        return this.entitiesOnMap(this.curMapID)
     }
 
     get toDraw() {

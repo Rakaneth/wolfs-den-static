@@ -295,7 +295,7 @@ export let Projectile = new Mixin('projectile', 'actor', {
     }
 })
 
-export let Vitals = new Mixin('vitals', 'vita;s', {
+export let Vitals = new Mixin('vitals', 'vitals', {
     init(opts) {
         this.alive = true
         this.exhausted = false

@@ -57,9 +57,11 @@ class MapBuilder {
     }
 
     _putinRoom(entity, room) {
-        let newX = GameManager.RNG.getUniformInt(room.getLeft(), room.getRight())
-        let newY = GameManager.RNG.getUniformInt(room.getTop(), room.getBottom())
-        entity.pos = new Point(newX, newY)
+        do {
+            let newX = GameManager.RNG.getUniformInt(room.getLeft(), room.getRight())
+            let newY = GameManager.RNG.getUniformInt(room.getTop(), room.getBottom())
+            entity.pos = new Point(newX, newY)
+        } while (GameManager.isBlocked(entity.pos, this._map.id))
         GameManager.addEntity(entity)
     }
 
