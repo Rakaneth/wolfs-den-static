@@ -160,7 +160,8 @@ let CreatureList = {
         randomEquip: [
             ['sword', 'axe', 'hammer'],
             ['armor']
-        ]
+        ],
+        excludeEqTags: ['blackiron']
     },
     'crypt-lord': {
         name: 'The Margrave of Bones',

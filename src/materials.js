@@ -115,7 +115,7 @@ let Materials = {
             wil: -20
         },
         frequency: 1,
-        tags: ['metal']
+        tags: ['metal', 'blackiron']
     },
     wolfHide: {
         name: 'wolf-hide',

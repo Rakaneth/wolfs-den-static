@@ -154,15 +154,16 @@ function buildMap(mapID, opts) {
     return newMap
 }
 
-function probTableFromTags(table, tags, matchAll = false) {
+function probTableFromTags(table, tags, excludeTags = null, matchAll = false) {
     let cands = {}
+    excludeTags = excludeTags || []
     Object.entries(table).forEach(entry => {
         let [id, data] = entry
         let yes
         if (matchAll) {
-            yes = !!tags && tags.every(tag => data.tags.includes(tag))
+            yes = !!tags && data.tags.every(tag => tags.includes(tag)) && !data.tags.some(tag => excludeTags.include(tag))
         } else {
-            yes = !!tags && tags.some(tag => data.tags.includes(tag))
+            yes = !!tags && data.tags.some(tag => tags.includes(tag)) && !data.tags.some(tag => excludeTags.includes(tag))
         }
         if (data.frequency && (!tags || yes)) {
             cands[id] = data.frequency
@@ -237,7 +238,7 @@ function buildCreature(buildID, mapID = null) {
     }
     if (creatureOpts.randomEquip) {
         creatureOpts.randomEquip.forEach(list => {
-            let rEQ = randomEq(list, mapID)
+            let rEQ = randomEq(list, mapID, creatureOpts.excludeEqTags)
             debugLog('FACTORY', `Building ${rEQ.name} for ${newCreature.name}`)
             newCreature.addInventory(rEQ.id)
             GameManager.addEntity(rEQ)
@@ -263,12 +264,12 @@ export function buildCorpse(deadCreature) {
     GameManager.addEntity(new Entity(corpseOpts))
 }
 
-function randomEq(tagList, mapID, starting = false) {
-    let eqTable = probTableFromTags(EquipList, tagList)
+function randomEq(tagList, mapID, excludeTags = null, starting = false) {
+    let eqTable = probTableFromTags(EquipList, tagList, excludeTags)
     let eqResult = GameManager.RNG.getWeightedValue(eqTable)
     let eqOpts = EquipList[eqResult]
     let matTags = starting ? eqOpts.tags.concat('starting') : eqOpts.tags
-    let matTable = probTableFromTags(Materials, matTags, starting)
+    let matTable = probTableFromTags(Materials, matTags, excludeTags, starting)
     let mat = GameManager.RNG.getWeightedValue(matTable)
     return buildEquip(eqResult, mat, mapID)
 }
