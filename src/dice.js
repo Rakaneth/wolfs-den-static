@@ -9,10 +9,28 @@ export let Difficulty = {
     SIMPLE: 50
 }
 
+export class DiceResult {
+    /**
+     * Describes the result of a roll.
+     * @param {boolean} passed 
+     * @param {number} margin 
+     * @param {number} diff 
+     * @param {number} base 
+     * @param {number} roll 
+     */
+    constructor(passed, margin, diff, base, roll) {
+        this.passed = passed
+        this.diff = diff
+        this.margin = margin
+        this.base = base
+        this.roll = roll
+    }
+}
+
 export function diceCheck(base, diff = Difficulty.SIMPLE) {
     let roll = GameManager.RNG.getPercentage()
     let result = (base + diff) - roll
-    return { passed: result >= 0, margin: Math.abs(result), diff, base, roll }
+    return new DiceResult(result >= 0, Math.abs(result), diff, base, roll)
 }
 
 export function rollDamage(dmg) {
